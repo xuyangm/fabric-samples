@@ -3,192 +3,262 @@ package chaincode
 import (
 	"encoding/json"
 	"fmt"
+	"math/big"
+	"sort"
 
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 )
 
-// SmartContract provides functions for managing an Asset
 type SmartContract struct {
 	contractapi.Contract
 }
 
-// Asset describes basic details of what makes up a simple asset
-// Insert struct field in alphabetic order => to achieve determinism across languages
-// golang keeps the order when marshal to json but doesn't order automatically
-type Asset struct {
-	AppraisedValue int    `json:"AppraisedValue"`
-	Color          string `json:"Color"`
-	ID             string `json:"ID"`
-	Owner          string `json:"Owner"`
-	Size           int    `json:"Size"`
+type Slot struct {
+	StartSlot    int     `json:"startSlot"`
+	EndSlot      int     `json:"endSlot"`
 }
 
-// InitLedger adds a base set of assets to the ledger
-func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) error {
-	assets := []Asset{
-		{ID: "asset1", Color: "blue", Size: 5, Owner: "Tomoko", AppraisedValue: 300},
-		{ID: "asset2", Color: "red", Size: 5, Owner: "Brad", AppraisedValue: 400},
-		{ID: "asset3", Color: "green", Size: 10, Owner: "Jin Soo", AppraisedValue: 500},
-		{ID: "asset4", Color: "yellow", Size: 10, Owner: "Max", AppraisedValue: 600},
-		{ID: "asset5", Color: "black", Size: 15, Owner: "Adriana", AppraisedValue: 700},
-		{ID: "asset6", Color: "white", Size: 15, Owner: "Michel", AppraisedValue: 800},
+type HashSlotTable struct {
+	HST map[string]Slot `json:"hashSlotTable"`
+}
+
+type WeightTable struct {
+	WT map[string]int `json:"nodeWeightTable"`
+}
+
+// storing the file tree
+type Chunk struct {
+	ChunkHash string `json:"chunkHash"`
+}
+
+type StripeTree struct {
+	StripeHash  string    `json:"stripeHash"`
+	ChunkHashes []Chunk  `json:"chunkHashes"`
+}
+
+type FileTree struct {
+	StripeHashes []StripeTree  `json:"stripeHashes"`
+}
+
+var weightTableKey = "wt"
+var numOfSlots = 16384
+
+// This function is used for updating the weight of each node.
+func (s *SmartContract) UpdateNodeWeight(ctx contractapi.TransactionContextInterface, nodeID string, weight int) error {
+	// check if weight table exists
+	weightTableJSON, err := ctx.GetStub().GetState(weightTableKey)
+	if err != nil {
+		return fmt.Errorf("failed to read weight table from state: %v", err)
 	}
 
-	for _, asset := range assets {
-		assetJSON, err := json.Marshal(asset)
-		if err != nil {
-			return err
-		}
+	var weightTable WeightTable
 
-		err = ctx.GetStub().PutState(asset.ID, assetJSON)
-		if err != nil {
-			return fmt.Errorf("failed to put to world state. %v", err)
+	// if weight table does not exist, create a new one
+	if weightTableJSON == nil {
+		weightTable = WeightTable{
+			WT: make(map[string]int),
 		}
+	} else {
+		// unmarshal the weight table
+		err = json.Unmarshal(weightTableJSON, &weightTable)
+		if err != nil {
+			return fmt.Errorf("failed to unmarshal weight table: %v", err)
+		}
+	}
+
+	// update the weight of the node
+	weightTable.WT[nodeID] = weight
+
+	// marshal the updated weight table
+	updatedWeightTableJSON, err := json.Marshal(weightTable)
+	if err != nil {
+		return fmt.Errorf("failed to marshal updated weight table: %v", err)
+	}
+
+	// put the updated weight table back into the state
+	err = ctx.GetStub().PutState(weightTableKey, updatedWeightTableJSON)
+	if err != nil {
+		return fmt.Errorf("failed to update weight table in state: %v", err)
 	}
 
 	return nil
 }
 
-// CreateAsset issues a new asset to the world state with given details.
-func (s *SmartContract) CreateAsset(ctx contractapi.TransactionContextInterface, id string, color string, size int, owner string, appraisedValue int) error {
-	exists, err := s.AssetExists(ctx, id)
+// This function is used for querying the weight of a node.
+func (s *SmartContract) QueryNodeWeight(ctx contractapi.TransactionContextInterface, nodeID string) (int, error) {
+	// check if weight table exists
+	weightTableJSON, err := ctx.GetStub().GetState(weightTableKey)
 	if err != nil {
-		return err
-	}
-	if exists {
-		return fmt.Errorf("the asset %s already exists", id)
+		return 0, fmt.Errorf("failed to read weight table from state: %v", err)
 	}
 
-	asset := Asset{
-		ID:             id,
-		Color:          color,
-		Size:           size,
-		Owner:          owner,
-		AppraisedValue: appraisedValue,
-	}
-	assetJSON, err := json.Marshal(asset)
-	if err != nil {
-		return err
-	}
+	var weightTable WeightTable
 
-	return ctx.GetStub().PutState(id, assetJSON)
-}
-
-// ReadAsset returns the asset stored in the world state with given id.
-func (s *SmartContract) ReadAsset(ctx contractapi.TransactionContextInterface, id string) (*Asset, error) {
-	assetJSON, err := ctx.GetStub().GetState(id)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read from world state: %v", err)
-	}
-	if assetJSON == nil {
-		return nil, fmt.Errorf("the asset %s does not exist", id)
-	}
-
-	var asset Asset
-	err = json.Unmarshal(assetJSON, &asset)
-	if err != nil {
-		return nil, err
-	}
-
-	return &asset, nil
-}
-
-// UpdateAsset updates an existing asset in the world state with provided parameters.
-func (s *SmartContract) UpdateAsset(ctx contractapi.TransactionContextInterface, id string, color string, size int, owner string, appraisedValue int) error {
-	exists, err := s.AssetExists(ctx, id)
-	if err != nil {
-		return err
-	}
-	if !exists {
-		return fmt.Errorf("the asset %s does not exist", id)
-	}
-
-	// overwriting original asset with new asset
-	asset := Asset{
-		ID:             id,
-		Color:          color,
-		Size:           size,
-		Owner:          owner,
-		AppraisedValue: appraisedValue,
-	}
-	assetJSON, err := json.Marshal(asset)
-	if err != nil {
-		return err
-	}
-
-	return ctx.GetStub().PutState(id, assetJSON)
-}
-
-// DeleteAsset deletes an given asset from the world state.
-func (s *SmartContract) DeleteAsset(ctx contractapi.TransactionContextInterface, id string) error {
-	exists, err := s.AssetExists(ctx, id)
-	if err != nil {
-		return err
-	}
-	if !exists {
-		return fmt.Errorf("the asset %s does not exist", id)
-	}
-
-	return ctx.GetStub().DelState(id)
-}
-
-// AssetExists returns true when asset with given ID exists in world state
-func (s *SmartContract) AssetExists(ctx contractapi.TransactionContextInterface, id string) (bool, error) {
-	assetJSON, err := ctx.GetStub().GetState(id)
-	if err != nil {
-		return false, fmt.Errorf("failed to read from world state: %v", err)
-	}
-
-	return assetJSON != nil, nil
-}
-
-// TransferAsset updates the owner field of asset with given id in world state, and returns the old owner.
-func (s *SmartContract) TransferAsset(ctx contractapi.TransactionContextInterface, id string, newOwner string) (string, error) {
-	asset, err := s.ReadAsset(ctx, id)
-	if err != nil {
-		return "", err
-	}
-
-	oldOwner := asset.Owner
-	asset.Owner = newOwner
-
-	assetJSON, err := json.Marshal(asset)
-	if err != nil {
-		return "", err
-	}
-
-	err = ctx.GetStub().PutState(id, assetJSON)
-	if err != nil {
-		return "", err
-	}
-
-	return oldOwner, nil
-}
-
-// GetAllAssets returns all assets found in world state
-func (s *SmartContract) GetAllAssets(ctx contractapi.TransactionContextInterface) ([]*Asset, error) {
-	// range query with empty string for startKey and endKey does an
-	// open-ended query of all assets in the chaincode namespace.
-	resultsIterator, err := ctx.GetStub().GetStateByRange("", "")
-	if err != nil {
-		return nil, err
-	}
-	defer resultsIterator.Close()
-
-	var assets []*Asset
-	for resultsIterator.HasNext() {
-		queryResponse, err := resultsIterator.Next()
+	// if weight table does not exist, return an error
+	if weightTableJSON == nil {
+		return 0, fmt.Errorf("weight table does not exist")
+	} else {
+		// unmarshal the weight table
+		err = json.Unmarshal(weightTableJSON, &weightTable)
 		if err != nil {
-			return nil, err
+			return 0, fmt.Errorf("failed to unmarshal weight table: %v", err)
 		}
-
-		var asset Asset
-		err = json.Unmarshal(queryResponse.Value, &asset)
-		if err != nil {
-			return nil, err
-		}
-		assets = append(assets, &asset)
 	}
 
-	return assets, nil
+	// check if node exists in weight table
+	weight, ok := weightTable.WT[nodeID]
+	if !ok {
+		return 0, fmt.Errorf("node does not exist in weight table")
+	}
+
+	return weight, nil
 }
+
+func (s *SmartContract) CreateVersionedHashSlot(ctx contractapi.TransactionContextInterface, blockHeight int) error {
+	// get version
+	currentVersion := blockHeight/10
+	weightTableJSON, err := ctx.GetStub().GetState(weightTableKey)
+	if err != nil {
+		return fmt.Errorf("failed to read weight table from state: %v", err)
+	}
+
+	var weightTable WeightTable
+
+	// if weight table does not exist, return an empty map
+	if weightTableJSON == nil {
+		return fmt.Errorf("empty weight table: %v", err)
+	} else {
+		// unmarshal the weight table
+		err = json.Unmarshal(weightTableJSON, &weightTable)
+		if err != nil {
+			return fmt.Errorf("failed to unmarshal weight table: %v", err)
+		}
+	}
+
+	nodeIDs := make([]string, 0)
+
+	// iterate through the weight table and print each node ID and its weight
+	totalWeight := 0
+	for nodeID, weight := range weightTable.WT {
+		nodeIDs = append(nodeIDs, nodeID)
+		totalWeight += weight
+	}
+	sort.Strings(nodeIDs)
+
+	hashSlotTable := HashSlotTable{
+		HST: make(map[string]Slot),
+	}
+	startSlot := 0
+	var lastNode string
+
+	for _, nodeID := range nodeIDs {
+		endSlot := startSlot + weightTable.WT[nodeID]*numOfSlots/totalWeight
+		hashSlotTable.HST[nodeID] = Slot{
+			StartSlot: startSlot,
+			EndSlot:   endSlot,
+		}
+		startSlot = endSlot + 1
+		lastNode = nodeID
+	}
+
+	if entry, ok := hashSlotTable.HST[lastNode]; ok {
+		entry.EndSlot = numOfSlots
+		hashSlotTable.HST[lastNode] = entry
+	}
+
+	// marshal the hash slot table
+	hashSlotTableJSON, err := json.Marshal(hashSlotTable)
+	if err != nil {
+		return fmt.Errorf("failed to marshal hash slot table: %v", err)
+	}
+
+	// put the hash slot table into the state
+	err = ctx.GetStub().PutState(fmt.Sprintf("%d", currentVersion), hashSlotTableJSON)
+	if err != nil {
+		return fmt.Errorf("failed to update hash slot table in state: %v", err)
+	}
+	return nil
+}
+
+// This function takes a hash value as input and calculates the node ID.
+func (s *SmartContract) QueryNodeID(ctx contractapi.TransactionContextInterface, hashValue string, blockHeight int) (string, error) {
+	// calculate slot ID
+	hashInt := new(big.Int)
+	hashInt.SetString(hashValue, 16)
+	hashMod := hashInt.Mod(hashInt, big.NewInt(int64(numOfSlots)))
+	slotID := int(hashMod.Int64())
+
+	// get current versioned hash slot table from state
+	currentVersion := blockHeight/10
+
+	hashSlotTableJSON, err := ctx.GetStub().GetState(fmt.Sprintf("%d", currentVersion))
+	if err != nil {
+		return "", fmt.Errorf("failed to read hash slot table from state: %v", err)
+	}
+
+	var hashSlotTable HashSlotTable
+
+	// if hash slot table does not exist, return an error
+	if hashSlotTableJSON == nil {
+		return "", fmt.Errorf("hash slot table does not exist")
+	} else {
+		// unmarshal the hash slot table
+		err = json.Unmarshal(hashSlotTableJSON, &hashSlotTable)
+		if err != nil {
+			return "", fmt.Errorf("failed to unmarshal hash slot table: %v", err)
+		}
+	}
+
+	// iterate through the hash slot table and find the corresponding nodeID
+	for nodeID, slot := range hashSlotTable.HST {
+		if slotID >= slot.StartSlot && slotID <= slot.EndSlot {
+			return nodeID, nil
+		}
+	}
+
+	return "", fmt.Errorf("no nodeID found for hash value")
+}
+
+// This function returns the range of hash values corresponding to each node. Only for test.
+func (s *SmartContract) GetHashSlotTable(ctx contractapi.TransactionContextInterface, version int) (string, error) {
+	// get hash slot table from state
+	hashSlotTableJSON, err := ctx.GetStub().GetState(fmt.Sprintf("%d", version))
+	if err != nil {
+		return "", fmt.Errorf("failed to read hash slot table from state: %v", err)
+	}
+
+	// if hash slot table does not exist, return an error
+	if hashSlotTableJSON == nil {
+		return "", fmt.Errorf("hash slot table does not exist")
+	} 
+
+	return string(hashSlotTableJSON), nil
+}
+
+func (s *SmartContract) StoreFileTree(ctx contractapi.TransactionContextInterface, fileHash string, fileTreeJSON string) (string, error) {
+	args := []byte(fileTreeJSON)
+
+	err := ctx.GetStub().PutState(fileHash, args)
+	if err != nil {
+		return "failed to store FileTree: failed to update FileTree in state", err
+	}
+
+	return "FileTree stored successfully", nil
+}
+
+// This function accepts a hash of a file and returns the FileTree of this file in the form of a json string.
+func (s *SmartContract) QueryFileTree(ctx contractapi.TransactionContextInterface, fileHash string) (string, error) {
+	// get the FileTree from the state
+	args, err := ctx.GetStub().GetState(fileHash)
+	if err != nil {
+		return "", fmt.Errorf("failed to read FileTree from state: %v", err)
+	}
+
+	// if FileTree does not exist, return an error
+	if args == nil {
+		return "", fmt.Errorf("FileTree does not exist")
+	}
+
+	return string(args), nil
+}
+
