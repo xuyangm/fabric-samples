@@ -26,6 +26,19 @@ application-javascript
 
 ├─``memory``
 
+## Prerequisites
+
+1. Install Zfec
+```
+pip install zfec
+```
+
+2. Install gRPC
+```
+python3 -m pip install grpcio
+python3 -m pip install grpcio-tools
+```
+
 ## Current Usage
 
 ### File Splitting
