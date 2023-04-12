@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package chunk_storage;
+
+message StoreChunkRequest {
+  bytes chunk_data = 1;
+  string chunk_hash = 2;
+}
+
+message StoreChunkResponse {
+  string status = 1;
+}
+
+service ChunkStorage {
+  rpc StoreChunk(StoreChunkRequest) returns (StoreChunkResponse);
+}

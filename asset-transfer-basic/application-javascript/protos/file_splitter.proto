@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package file_splitter;
+
+message FileRequest {
+  bytes content = 1;
+}
+
+message FileResponse {
+  string message = 1;
+}
+
+service FileSplitter {
+  rpc SplitFile(FileRequest) returns (FileResponse);
+}
