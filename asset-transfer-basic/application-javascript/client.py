@@ -10,9 +10,10 @@ stub = file_splitter_pb2_grpc.FileSplitterStub(channel)
 with open('abc.txt', 'rb') as f:
     file_contents = f.read()
 
+print(type(file_contents))
 # create a request message with the file contents
 request = file_splitter_pb2.FileRequest(content=file_contents)
-
+print(type(request))
 # call the remote method to send the file
 response = stub.SplitFile(request)
 

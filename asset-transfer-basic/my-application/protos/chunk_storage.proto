@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = "github.com/xuyangm/fabric-samples/asset-transfer-basic/my-application/protos/chunkstorage";
+
+package chunkstorage;
+
+message ChunkStorageRequest {
+  bytes data = 1;
+}
+
+message ChunkStorageResponse {
+  string status = 1;
+}
+
+service ChunkStorage {
+  rpc StoreChunk(ChunkStorageRequest) returns (ChunkStorageResponse);
+}

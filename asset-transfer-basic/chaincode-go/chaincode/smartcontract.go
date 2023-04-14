@@ -220,7 +220,8 @@ func (s *SmartContract) QueryNodeID(ctx contractapi.TransactionContextInterface,
 }
 
 // This function returns the range of hash values corresponding to each node. Only for test.
-func (s *SmartContract) GetHashSlotTable(ctx contractapi.TransactionContextInterface, version int) (string, error) {
+func (s *SmartContract) GetHashSlotTable(ctx contractapi.TransactionContextInterface, blockHeight int) (string, error) {
+	version := blockHeight/10
 	// get hash slot table from state
 	hashSlotTableJSON, err := ctx.GetStub().GetState(fmt.Sprintf("%d", version))
 	if err != nil {

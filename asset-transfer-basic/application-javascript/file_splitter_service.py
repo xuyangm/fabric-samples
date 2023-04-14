@@ -15,6 +15,7 @@ class FileSplitterServicer(file_splitter_pb2_grpc.FileSplitterServicer):
         self.file_objs = None
 
     def SplitFile(self, request, context):
+        print("Start splitting a file...")
         file_obj = File()
 
         # Accept file from remote nodes
@@ -38,15 +39,18 @@ class FileSplitterServicer(file_splitter_pb2_grpc.FileSplitterServicer):
                 chunk_obj.set_hash_value(chunk_hash)
                 stripe_obj.add_chunk(chunk_obj)
 
+                result = subprocess.run(["node", "getChunkNode.js", chunk_hash, str(cfg.block_height)], capture_output=True, text=True)
+                chunk_node = result.stdout.split("*** Result: ")[1]
+
                 # Store chunk in a file
-                with grpc.insecure_channel('localhost:50052') as channel:
+                with grpc.insecure_channel(chunk_node) as channel:
                     # create a stub
                     stub = chunk_storage_pb2_grpc.ChunkStorageStub(channel)
                     # create a request object
                     request = chunk_storage_pb2.StoreChunkRequest(chunk_data=chunk, chunk_hash=chunk_hash)
                     # send the request and get the response
                     result = stub.StoreChunk(request)
-                    print(result.status)
+                    print(f"Store chunk {chunk_hash} to node {chunk_node} {result.status}")
 
             file_obj.add_stripe(stripe_obj)
 
@@ -54,17 +58,17 @@ class FileSplitterServicer(file_splitter_pb2_grpc.FileSplitterServicer):
         if self.file_objs is None:
             self.file_objs = []
         self.file_objs.append(file_obj)
-        _ = file_obj.output_to_json_file()
+        fn = file_obj.output_to_json_file()
 
-        # result = subprocess.run(["node", "app.js", fn], capture_output=True, text=True)
-        # json_file = json.loads(result.stdout.split("*** JSONFILE: ")[1])
-        # content = json_file['stripeHashes']
-        # print(content)
+        result = subprocess.run(["node", "storeFileTree.js", fn], capture_output=True, text=True)
+        json_file = json.loads(result.stdout.split("*** JSONFILE: ")[1])
+        print(json_file)
 
         return file_splitter_pb2.FileResponse(message='File split and stored successfully')
 
 def serve():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    options = [('grpc.max_receive_message_length', 100 * 1024 * 1024)]
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10), options=options)
     file_splitter_pb2_grpc.add_FileSplitterServicer_to_server(FileSplitterServicer(), server)
     server.add_insecure_port('[::]:50051')
     server.start()

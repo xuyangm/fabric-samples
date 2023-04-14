@@ -28,7 +28,8 @@ class ChunkStorageService(chunk_storage_pb2_grpc.ChunkStorageServicer):
         return chunk_storage_pb2.StoreChunkResponse(status="SUCCESS")
 
 def main():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    options = [('grpc.max_receive_message_length', 100 * 1024 * 1024)]
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10), options=options)
     chunk_storage_pb2_grpc.add_ChunkStorageServicer_to_server(ChunkStorageService(), server)
     server.add_insecure_port('[::]:50052')
     server.start()
