@@ -8,8 +8,9 @@ import (
 	"io/ioutil"
 	"log"
 	"net"
+	"os"
 
-	"github.com/xuyangm/fabric-samples/asset-transfer-basic/my-application/protos/chunkstorage"
+	pb "github.com/xuyangm/fabric-samples/asset-transfer-basic/my-application/protos"
 	"google.golang.org/grpc"
 )
 
@@ -17,9 +18,16 @@ const (
 	port = ":50052"
 )
 
-type server struct{}
+type server struct{
+	pb.UnimplementedChunkStorageServer
+}
 
-func (s *server) StoreChunk(ctx context.Context, in *chunkstorage.ChunkStorageRequest) (*chunkstorage.ChunkStorageResponse, error) {
+func (s *server) StoreChunk(ctx context.Context, in *pb.ChunkStorageRequest) (*pb.ChunkStorageResponse, error) {
+	// Ensure the memory directory exists
+	if _, err := os.Stat("memory"); os.IsNotExist(err) {
+		os.Mkdir("memory", 0755)
+	}
+	
 	// Store the chunk in memory folder
 	hash := sha256.Sum256(in.GetData())
 	hashString := hex.EncodeToString(hash[:])
@@ -29,7 +37,7 @@ func (s *server) StoreChunk(ctx context.Context, in *chunkstorage.ChunkStorageRe
 	}
 
 	// Return success response
-	return &chunkstorage.ChunkStorageResponse{Status: "SUCCESS"}, nil
+	return &pb.ChunkStorageResponse{Status: "SUCCESS"}, nil
 }
 
 func main() {
@@ -43,7 +51,7 @@ func main() {
 	s := grpc.NewServer()
 
 	// Register the chunk storage server
-	chunkstorage.RegisterChunkStorageServer(s, &server{})
+	pb.RegisterChunkStorageServer(s, &server{})
 
 	// Start the server
 	fmt.Printf("Starting chunk storage server on port %s\n", port)

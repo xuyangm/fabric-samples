@@ -4,7 +4,7 @@
 // - protoc             v3.6.1
 // source: chunk_storage.proto
 
-package chunkstorage
+package messages
 
 import (
 	context "context"
@@ -23,6 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ChunkStorageClient interface {
 	StoreChunk(ctx context.Context, in *ChunkStorageRequest, opts ...grpc.CallOption) (*ChunkStorageResponse, error)
+	GetChunk(ctx context.Context, in *ChunkRequest, opts ...grpc.CallOption) (*ChunkResponse, error)
 }
 
 type chunkStorageClient struct {
@@ -35,7 +36,16 @@ func NewChunkStorageClient(cc grpc.ClientConnInterface) ChunkStorageClient {
 
 func (c *chunkStorageClient) StoreChunk(ctx context.Context, in *ChunkStorageRequest, opts ...grpc.CallOption) (*ChunkStorageResponse, error) {
 	out := new(ChunkStorageResponse)
-	err := c.cc.Invoke(ctx, "/chunkstorage.ChunkStorage/StoreChunk", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/messages.ChunkStorage/StoreChunk", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *chunkStorageClient) GetChunk(ctx context.Context, in *ChunkRequest, opts ...grpc.CallOption) (*ChunkResponse, error) {
+	out := new(ChunkResponse)
+	err := c.cc.Invoke(ctx, "/messages.ChunkStorage/GetChunk", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -47,6 +57,7 @@ func (c *chunkStorageClient) StoreChunk(ctx context.Context, in *ChunkStorageReq
 // for forward compatibility
 type ChunkStorageServer interface {
 	StoreChunk(context.Context, *ChunkStorageRequest) (*ChunkStorageResponse, error)
+	GetChunk(context.Context, *ChunkRequest) (*ChunkResponse, error)
 	mustEmbedUnimplementedChunkStorageServer()
 }
 
@@ -56,6 +67,9 @@ type UnimplementedChunkStorageServer struct {
 
 func (UnimplementedChunkStorageServer) StoreChunk(context.Context, *ChunkStorageRequest) (*ChunkStorageResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method StoreChunk not implemented")
+}
+func (UnimplementedChunkStorageServer) GetChunk(context.Context, *ChunkRequest) (*ChunkResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetChunk not implemented")
 }
 func (UnimplementedChunkStorageServer) mustEmbedUnimplementedChunkStorageServer() {}
 
@@ -80,10 +94,28 @@ func _ChunkStorage_StoreChunk_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/chunkstorage.ChunkStorage/StoreChunk",
+		FullMethod: "/messages.ChunkStorage/StoreChunk",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ChunkStorageServer).StoreChunk(ctx, req.(*ChunkStorageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ChunkStorage_GetChunk_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChunkRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChunkStorageServer).GetChunk(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/messages.ChunkStorage/GetChunk",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChunkStorageServer).GetChunk(ctx, req.(*ChunkRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -92,12 +124,16 @@ func _ChunkStorage_StoreChunk_Handler(srv interface{}, ctx context.Context, dec 
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ChunkStorage_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "chunkstorage.ChunkStorage",
+	ServiceName: "messages.ChunkStorage",
 	HandlerType: (*ChunkStorageServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "StoreChunk",
 			Handler:    _ChunkStorage_StoreChunk_Handler,
+		},
+		{
+			MethodName: "GetChunk",
+			Handler:    _ChunkStorage_GetChunk_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

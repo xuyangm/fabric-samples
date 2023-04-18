@@ -79,6 +79,7 @@ func main() {
 
 	nodeID := os.Args[1]
 	weight := os.Args[2]
+	blockHeight := os.Args[3]
 
 	result, err := contract.SubmitTransaction("UpdateNodeWeight", nodeID, weight)
 	if err != nil {
@@ -87,6 +88,18 @@ func main() {
 	log.Println(string(result))
 
 	result, err = contract.EvaluateTransaction("QueryNodeWeight", nodeID)
+	if err != nil {
+		log.Fatalf("Failed to evaluate transaction: %v", err)
+	}
+	log.Println(string(result))
+
+	result, err = contract.SubmitTransaction("CreateVersionedHashSlot", blockHeight)
+	if err != nil {
+		log.Fatalf("Failed to Submit transaction: %v", err)
+	}
+	log.Println(string(result))
+
+	result, err = contract.EvaluateTransaction("GetHashSlotTable", blockHeight)
 	if err != nil {
 		log.Fatalf("Failed to evaluate transaction: %v", err)
 	}

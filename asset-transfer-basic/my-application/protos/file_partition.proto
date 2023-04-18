@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = "github.com/xuyangm/fabric-samples/asset-transfer-basic/my-application/protos/messages";
+
+package messages;
+
+message FilePartitionRequest {
+  bytes data = 1;
+}
+
+message FilePartitionResponse {
+  string status = 1;
+}
+
+service FilePartition {
+  rpc PartitionFile(FilePartitionRequest) returns (FilePartitionResponse);
+}
