@@ -41,7 +41,9 @@ git config --global http.postBuffer 1048576000
 
 11. ```./boost``` (use ./boost -h to see help message)
 
-12. ```go build chunk_storage_service.go
+12. Build applications:
+```
+go build chunk_storage_service.go
 go build file_partition_service.go storage_object.go
 go build store_file.go
 go build request_file.go storage_object.go
