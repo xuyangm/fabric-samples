@@ -1,3 +1,5 @@
+// the data of the file->this service->1. divide the file into chunks (communicate with chunk_storage_service) 2. record the hash of those chunks (on chaincode)
+
 package main
 
 import (
@@ -7,7 +9,9 @@ import (
 	"net"
 	"encoding/json"
 	"os"
+	"flag"
 	"path/filepath"
+	"io/ioutil"
 
 	utils "github.com/xuyangm/fabric-samples/asset-transfer-basic/my-application/utils"
 	pb "github.com/xuyangm/fabric-samples/asset-transfer-basic/my-application/protos"
@@ -16,11 +20,10 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/pkg/gateway"
 )
 
-const (
-	port = ":50051"
+var (
+	port = flag.String("port", ":50051", "listening port")
+	contract *gateway.Contract
 )
-
-var contract *gateway.Contract
 
 type server struct{
 	pb.UnimplementedFilePartitionServer
@@ -98,7 +101,37 @@ func (s *server) PartitionFile(ctx context.Context, request *pb.FilePartitionReq
 
 	// Accept file from remote nodes
 	fileContent := request.Data
-	fileObj.SetHashValue(utils.GetHash(fileContent))
+	fileHash := utils.GetHash(fileContent)
+	fileObj.SetHashValue(fileHash)
+	fmt.Println("The hash of this file is ", fileHash)
+
+	// Add access rules
+	success, err := contract.SubmitTransaction("SetFlag", request.Flag, fileHash)
+	if err != nil {
+		log.Fatalf("Failed to submit transaction: %v", err)
+	}
+	fmt.Println("Set flag ", string(success))
+	if request.Flag[0] == 'T' {
+		success, err = contract.SubmitTransaction("AddPermissionRule", request.Permission, fileHash)
+		if err != nil {
+			log.Fatalf("Failed to submit transaction: %v", err)
+		}
+		fmt.Println("Add permission rule ", string(success))
+	}
+	if request.Flag[1] == 'T' {
+		success, err = contract.SubmitTransaction("AddBannedRule", request.Banned, fileHash)
+		if err != nil {
+			log.Fatalf("Failed to submit transaction: %v", err)
+		}
+		fmt.Println("Add banned rule ", string(success))
+	}
+	if request.Flag[2] == 'T' {
+		success, err = contract.SubmitTransaction("SetToken", string(request.Token), fileHash)
+		if err != nil {
+			log.Fatalf("Failed to submit transaction: %v", err)
+		}
+		fmt.Println("Set tokens ", string(success))
+	}
 
 	// Divide file into stripes
 	// var stripes []Stripe
@@ -115,6 +148,7 @@ func (s *server) PartitionFile(ctx context.Context, request *pb.FilePartitionReq
 
 		stripeObj := Stripe{}
 		stripeObj.SetHashValue(utils.GetHash(data))
+		fmt.Println("Chunk number: ", len(encodedChunks))
 		for _, chunk := range encodedChunks {
 			chunkHash := utils.GetHash(chunk)
 			chunkObj := Chunk{}
@@ -155,12 +189,22 @@ func (s *server) PartitionFile(ctx context.Context, request *pb.FilePartitionReq
 	}
 
 	// Marshal fileObj to json and print it to a file
-	jsonFile, err := json.Marshal(fileObj)
+	// jsonFile, err := json.Marshal(fileObj)
+	// if err != nil {
+	// 	log.Fatalf("Failed to marshal file object: %v", err)
+	// }
+	// Marshal fileObj to json and print it to a file
+	jsonFile, err := json.MarshalIndent(fileObj, "", "  ")
 	if err != nil {
 		log.Fatalf("Failed to marshal file object: %v", err)
 	}
+	fileName := fileObj.FileHash + ".json"
+	err = ioutil.WriteFile(fileName, jsonFile, 0644)
+	if err != nil {
+		log.Fatalf("Failed to write file: %v", err)
+	}
 
-	result, err := contract.SubmitTransaction("StoreFileTree", fileObj.FileHash, string(jsonFile))
+	_, err = contract.SubmitTransaction("StoreFileTree", fileObj.FileHash, string(jsonFile))
 	if err != nil {
 		log.Fatalf("Failed to Submit transaction: %v", err)
 	}
@@ -183,10 +227,16 @@ func (s *server) PartitionFile(ctx context.Context, request *pb.FilePartitionReq
 }
 
 func main() {
+	flag.Usage = func() {
+		fmt.Println("Usage: ./file_partition_service [-h] [-port string]")
+		flag.PrintDefaults()
+	}
+	flag.Parse()
+
 	initializeSmartContract()
 
 	// Create a listener on the TCP port
-	lis, err := net.Listen("tcp", port)
+	lis, err := net.Listen("tcp", *port)
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
 	}
@@ -198,7 +248,7 @@ func main() {
 	pb.RegisterFilePartitionServer(s, &server{})
 
 	// Start the server
-	fmt.Printf("Starting chunk storage server on port %s\n", port)
+	fmt.Printf("Starting chunk storage server on port %s\n", *port)
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("Failed to serve: %v", err)
 	}

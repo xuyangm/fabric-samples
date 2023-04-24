@@ -9,14 +9,13 @@ import (
 	"log"
 	"net"
 	"os"
+	"flag"
 
 	pb "github.com/xuyangm/fabric-samples/asset-transfer-basic/my-application/protos"
 	"google.golang.org/grpc"
 )
 
-const (
-	port = ":50052"
-)
+var port = flag.String("port", ":50052", "listening port")
 
 type server struct{
 	pb.UnimplementedChunkStorageServer
@@ -40,9 +39,27 @@ func (s *server) StoreChunk(ctx context.Context, in *pb.ChunkStorageRequest) (*p
 	return &pb.ChunkStorageResponse{Status: "SUCCESS"}, nil
 }
 
+func (s *server) GetChunk(ctx context.Context, in *pb.ChunkRequest) (*pb.ChunkResponse, error) {
+	hashString := in.GetHash()
+	// Search local folder "memory". If there is a file named as hashString, return it.
+	data, err := ioutil.ReadFile(fmt.Sprintf("memory/%s", hashString))
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.ChunkResponse{Data: data}, nil
+}
+
+
 func main() {
+	flag.Usage = func() {
+		fmt.Println("Usage: ./chunk_storage_service [-h] [-port string]")
+		flag.PrintDefaults()
+	}
+	flag.Parse()
+
 	// Create a listener on the TCP port
-	lis, err := net.Listen("tcp", port)
+	lis, err := net.Listen("tcp", *port)
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
 	}
@@ -54,7 +71,7 @@ func main() {
 	pb.RegisterChunkStorageServer(s, &server{})
 
 	// Start the server
-	fmt.Printf("Starting chunk storage server on port %s\n", port)
+	fmt.Printf("Starting chunk storage server on port %s\n", *port)
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("Failed to serve: %v", err)
 	}
