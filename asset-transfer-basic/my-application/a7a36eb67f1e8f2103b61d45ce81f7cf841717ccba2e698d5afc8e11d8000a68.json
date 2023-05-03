@@ -1,0 +1,1061 @@
+{
+  "fileHash": "a7a36eb67f1e8f2103b61d45ce81f7cf841717ccba2e698d5afc8e11d8000a68",
+  "stripeHashes": [
+    {
+      "stripeHash": "544f720be00b611ed26ee6a1b9918f658620edc7124b4390b51474ef110fe1cd",
+      "chunkHashes": [
+        {
+          "chunkHash": "4ac817e3587303b935d6225b7f3ff9c6909de53660b2386a3ede5b4be013bdcc"
+        },
+        {
+          "chunkHash": "9fc97c77df26f312d40904cf5811164308149bdab8f098478be08978cf1dd065"
+        },
+        {
+          "chunkHash": "1fc993b1fd8f039dbb42d856ba8abc47cf9480ccbc54a442ac2fd6ce4a4dab7c"
+        },
+        {
+          "chunkHash": "45f19001f3cb828f1c3a8a2b569ccc16ecc57206dacf91361501a4c3c4343ec6"
+        },
+        {
+          "chunkHash": "4464c3a6dea484e8859de80bdcee528463e36372dcb2b4fc6af7b345019e0f22"
+        },
+        {
+          "chunkHash": "dc8bc49fb6ffb2c5475191cd9fecca8024ec7ff6700019f872f249d494883886"
+        },
+        {
+          "chunkHash": "4b023fa8c6d3ab9d3b37782fe9abb80ee5267de8baaba5fc4ee65b795898cf6d"
+        },
+        {
+          "chunkHash": "7982192fcb5f6050d83dc1ee860050c5dc9bcc42d3882cb3ef88a2c04837038b"
+        },
+        {
+          "chunkHash": "ddc3fb3c0b12ccc071bf6dc3b49137fd1df799578752c5538a58d77e62f08807"
+        }
+      ]
+    },
+    {
+      "stripeHash": "b07ee66fa75d4555dd85e6306cacb031b569b14653d8317de0750dfedf3ac285",
+      "chunkHashes": [
+        {
+          "chunkHash": "4b023fa8c6d3ab9d3b37782fe9abb80ee5267de8baaba5fc4ee65b795898cf6d"
+        },
+        {
+          "chunkHash": "7982192fcb5f6050d83dc1ee860050c5dc9bcc42d3882cb3ef88a2c04837038b"
+        },
+        {
+          "chunkHash": "ddc3fb3c0b12ccc071bf6dc3b49137fd1df799578752c5538a58d77e62f08807"
+        },
+        {
+          "chunkHash": "a02ca93d0f350b9da802189fa1a92d2bed26d76862bd17ed73b9be799aa99d32"
+        },
+        {
+          "chunkHash": "7538bca8ba0e9c99cf7f53a68a16a896d5334ccdd74465c07e901339329a19b1"
+        },
+        {
+          "chunkHash": "4e643a771307290d679c977d3cadf14a1e78e07ce577bbb0cd51d1801b53cf83"
+        },
+        {
+          "chunkHash": "efe9759d8691f4e15d6e4b8aa53bcd1e5cf28a0fe3e96d69d8ac7376df2be414"
+        },
+        {
+          "chunkHash": "f75bdbb9c5d69a34a156162990706ae55150298ebc3331f078a44ca175146c6a"
+        },
+        {
+          "chunkHash": "049f201b6580ad8b09d68f346684ae249a5ddc240cdf61b5bd15bec5ff8ca1b0"
+        }
+      ]
+    },
+    {
+      "stripeHash": "ea92013559f4cbdd72fdc564ea696e4f3ad0002b316f31c99b4393b0b3b5e879",
+      "chunkHashes": [
+        {
+          "chunkHash": "efe9759d8691f4e15d6e4b8aa53bcd1e5cf28a0fe3e96d69d8ac7376df2be414"
+        },
+        {
+          "chunkHash": "f75bdbb9c5d69a34a156162990706ae55150298ebc3331f078a44ca175146c6a"
+        },
+        {
+          "chunkHash": "049f201b6580ad8b09d68f346684ae249a5ddc240cdf61b5bd15bec5ff8ca1b0"
+        },
+        {
+          "chunkHash": "1f69c14a2bd6e74a2a540c9c51f502f99214ffedccc9a2f391fad07550a04fd6"
+        },
+        {
+          "chunkHash": "d88fd957071ce61033b4b76097c42dd75cad3051e55a6af3a128e5bdb43c0eda"
+        },
+        {
+          "chunkHash": "9ed9cd01d575a225c1e383592e00759f9776a0f3021779b9b83037cd5b4e5108"
+        },
+        {
+          "chunkHash": "f2f3011c26183c9c92cd1f14a1e5585c008a673a1b166e0b013afc10b74c045e"
+        },
+        {
+          "chunkHash": "1d76f1ad72089f6d664a1e01afb145adfa065b190332c2cf39a3bbcf6be72774"
+        },
+        {
+          "chunkHash": "0b0896ce2b7af9b47df527b1d48016c7f7ebc34eae3c0f1c4d725a4365e0a81e"
+        }
+      ]
+    },
+    {
+      "stripeHash": "ef4ed1f720b061d09b835ae1d39823daad37300175ca90965400bff7f62f341e",
+      "chunkHashes": [
+        {
+          "chunkHash": "f2f3011c26183c9c92cd1f14a1e5585c008a673a1b166e0b013afc10b74c045e"
+        },
+        {
+          "chunkHash": "1d76f1ad72089f6d664a1e01afb145adfa065b190332c2cf39a3bbcf6be72774"
+        },
+        {
+          "chunkHash": "0b0896ce2b7af9b47df527b1d48016c7f7ebc34eae3c0f1c4d725a4365e0a81e"
+        },
+        {
+          "chunkHash": "8daf2093fb8238d4c2ac382f3959f9f909643402629bf22053c378a9a8905c66"
+        },
+        {
+          "chunkHash": "d1b60d5c3862f512524ff08031cd6a869324ef50eb356d6527e58d244bae4eca"
+        },
+        {
+          "chunkHash": "4066bbdd3738ff845cf5bd311fbfd34b390a13ae977031f24cf3e92972b8ba92"
+        },
+        {
+          "chunkHash": "1d4e6c1fb72c8c68e321b08f2b03cdafc5786edb9d9c00fa4661bb8a111eae5a"
+        },
+        {
+          "chunkHash": "8a1bb11e5623fce68f9cae766fbf95c2f04aca3d02fc19633ef0f28407656db5"
+        },
+        {
+          "chunkHash": "455536486f880395725ee347c068409233102193dbb72b38671a0a7c155c5d8b"
+        }
+      ]
+    },
+    {
+      "stripeHash": "48cc0e62610199e1ca8a508085e23681daff3b4b17b1b1c00021d4b0617e4402",
+      "chunkHashes": [
+        {
+          "chunkHash": "1d4e6c1fb72c8c68e321b08f2b03cdafc5786edb9d9c00fa4661bb8a111eae5a"
+        },
+        {
+          "chunkHash": "8a1bb11e5623fce68f9cae766fbf95c2f04aca3d02fc19633ef0f28407656db5"
+        },
+        {
+          "chunkHash": "455536486f880395725ee347c068409233102193dbb72b38671a0a7c155c5d8b"
+        },
+        {
+          "chunkHash": "4fc17785d6c781f89ab7034adbb65c26323bac71e25a5170640184642188f660"
+        },
+        {
+          "chunkHash": "42dd92659a299acf69d733cddb2364f068a967e9ad4d07ca2c54a982cfb16a81"
+        },
+        {
+          "chunkHash": "f3c34a6f708b4aef053c107e3a09523ac1c9b2b6066250f4c3ccb7281955f89c"
+        },
+        {
+          "chunkHash": "37f5e79d11c0cae457fbabb5a18d9dd089a64bd25818158ce6225ac7580bba12"
+        },
+        {
+          "chunkHash": "dffcdd7785a3f11d13e945ac8b0ff6d4b03436691598a75bbb23fb3d45103f60"
+        },
+        {
+          "chunkHash": "1e4f4eaed8bb0d59be1725acb7d93f519839c3c7bc2cef2e3b1a503d0a6ed78a"
+        }
+      ]
+    },
+    {
+      "stripeHash": "5e16d4632aebc13c3fdb31f8fee4b0b3ee1ae40ea9644083195bec7b6dd30d44",
+      "chunkHashes": [
+        {
+          "chunkHash": "37f5e79d11c0cae457fbabb5a18d9dd089a64bd25818158ce6225ac7580bba12"
+        },
+        {
+          "chunkHash": "dffcdd7785a3f11d13e945ac8b0ff6d4b03436691598a75bbb23fb3d45103f60"
+        },
+        {
+          "chunkHash": "1e4f4eaed8bb0d59be1725acb7d93f519839c3c7bc2cef2e3b1a503d0a6ed78a"
+        },
+        {
+          "chunkHash": "2c3e0150ee4421554d75e998ae49a065c9e765623ff8d0d9186b1d8b58e8d286"
+        },
+        {
+          "chunkHash": "9bbba6688ba3f904a21472abf2b8db5108890c1d384d730f63db5c7e71738bce"
+        },
+        {
+          "chunkHash": "5f1d3f3ac3fec7c33a0325c24c6775501ad05b35365ba2c6e799ff8e6445f136"
+        },
+        {
+          "chunkHash": "6fe519ae8cac7903ebbf8ff5527ab1ed09923be8702ddeec4d7b325806ab3eb6"
+        },
+        {
+          "chunkHash": "414f1f2fc97eee069dc3c61a1ffccbd97f2d2c4bfbb54801dc8e89924e822bb0"
+        },
+        {
+          "chunkHash": "cda77b38b64af0b0160f0bb942f2beac56eb501ba6445384d8f09d67257d85eb"
+        }
+      ]
+    },
+    {
+      "stripeHash": "7865199727f8f11a41baf1e2e83439611e5835e0942411c9e776a3a3cd9fe5fa",
+      "chunkHashes": [
+        {
+          "chunkHash": "6fe519ae8cac7903ebbf8ff5527ab1ed09923be8702ddeec4d7b325806ab3eb6"
+        },
+        {
+          "chunkHash": "414f1f2fc97eee069dc3c61a1ffccbd97f2d2c4bfbb54801dc8e89924e822bb0"
+        },
+        {
+          "chunkHash": "cda77b38b64af0b0160f0bb942f2beac56eb501ba6445384d8f09d67257d85eb"
+        },
+        {
+          "chunkHash": "00d2243aac2474cc916cf5c88cd66fb303c9aa8483dd8c19e077fde88b271564"
+        },
+        {
+          "chunkHash": "7a2b2772c4506333dd4a7aae29d50a2910285b2628a784b66b76bcbd8fe8f7d4"
+        },
+        {
+          "chunkHash": "95b6ac078df961a430ff27b21b2642635cdf5acbc5df78870ce37a245872442e"
+        },
+        {
+          "chunkHash": "de19e0c103daef76d47d02fb81b9e44e39958c8ec1ef0ce411a0d17fb711be12"
+        },
+        {
+          "chunkHash": "af5efed2911d6ab4e1e8bd8026f9c79dd5e9efdf39adb59b317cd7bc32400888"
+        },
+        {
+          "chunkHash": "e060d81004ceacbea00831892e148380c268a3c5f7a106a6fbe87eb6c3e14c7c"
+        }
+      ]
+    },
+    {
+      "stripeHash": "7d262232b6b42bed5c053e61b7fef189decfebe2a17849e87a235b9d7b18439c",
+      "chunkHashes": [
+        {
+          "chunkHash": "de19e0c103daef76d47d02fb81b9e44e39958c8ec1ef0ce411a0d17fb711be12"
+        },
+        {
+          "chunkHash": "af5efed2911d6ab4e1e8bd8026f9c79dd5e9efdf39adb59b317cd7bc32400888"
+        },
+        {
+          "chunkHash": "e060d81004ceacbea00831892e148380c268a3c5f7a106a6fbe87eb6c3e14c7c"
+        },
+        {
+          "chunkHash": "4a76dc589455719a9e40713fc9daebf1cf6eda970b2aee43bb961abcbb69cd34"
+        },
+        {
+          "chunkHash": "ba7c647ece5bc1204bcaeda641c9d317f465cb3fdbc9768609ff07ebdd2251e0"
+        },
+        {
+          "chunkHash": "7d6ea77046063739364417171db6b4ef0b1525a7e25f83b06534590fc0e3c9b2"
+        },
+        {
+          "chunkHash": "1ad0f3c91b6a0e545fc703081a824da415b624575b0da6b23d2d6d1f63d9ac51"
+        },
+        {
+          "chunkHash": "216a3b7ba2e6fc6ccd748d103f01cd123f890ab4eddd69e12f27ce387ee92e53"
+        },
+        {
+          "chunkHash": "d23697cb339eab875c0c829e1397ba03297562367c82fc0a9e8a0da780eb8cb8"
+        }
+      ]
+    },
+    {
+      "stripeHash": "bd10332bbebddd5ae61c816b1a155eaa09d0d7ee4e5c3eb965573a5982408711",
+      "chunkHashes": [
+        {
+          "chunkHash": "1ad0f3c91b6a0e545fc703081a824da415b624575b0da6b23d2d6d1f63d9ac51"
+        },
+        {
+          "chunkHash": "216a3b7ba2e6fc6ccd748d103f01cd123f890ab4eddd69e12f27ce387ee92e53"
+        },
+        {
+          "chunkHash": "d23697cb339eab875c0c829e1397ba03297562367c82fc0a9e8a0da780eb8cb8"
+        },
+        {
+          "chunkHash": "9e7dc31e563acaba9fae460f333bcb76fead15297408bfb74c7ac81dd2ebe2b1"
+        },
+        {
+          "chunkHash": "0af9e22856de93123fedfe04dfc68f7eb1776181216886e760694acb8ebd9805"
+        },
+        {
+          "chunkHash": "3b233e4eb76e6eecf81a4f7d1a8b0550468bbb5d57f873f262c064e97cb43402"
+        },
+        {
+          "chunkHash": "31679cd8e849b9268b76f2ec75a5a3cf70ebbefd65f2dd7f7a01fd2d3f4fb80b"
+        },
+        {
+          "chunkHash": "9f0698812fa183c38e1749499f21384c86864e1ca8c9e4501e7f2a56c3c7d0c5"
+        },
+        {
+          "chunkHash": "6d530540781171dda9d742597da180258b8d1a4626429229ba55983231f96905"
+        }
+      ]
+    },
+    {
+      "stripeHash": "a6c71aa61af7f4b1553b4c2332b8f3a1d394c9db12934451d8c9b19e3fc8ee3b",
+      "chunkHashes": [
+        {
+          "chunkHash": "31679cd8e849b9268b76f2ec75a5a3cf70ebbefd65f2dd7f7a01fd2d3f4fb80b"
+        },
+        {
+          "chunkHash": "9f0698812fa183c38e1749499f21384c86864e1ca8c9e4501e7f2a56c3c7d0c5"
+        },
+        {
+          "chunkHash": "6d530540781171dda9d742597da180258b8d1a4626429229ba55983231f96905"
+        },
+        {
+          "chunkHash": "8910b74b16b4aca2fd4b45e2a54103999b56f6bb0ade524a4120f8edfd07abf8"
+        },
+        {
+          "chunkHash": "40ba84e526d1dc71528b4a71a3b6c828d873b30e256c9cb3ad00d460b43935bd"
+        },
+        {
+          "chunkHash": "3c66d561b6594ef2297b9a602a29022c5815d363bf68033d749338209a1bb4a4"
+        },
+        {
+          "chunkHash": "7571b079f3927245d186cca4a0b5e4737fd425c7cced7043adf441e63ede9677"
+        },
+        {
+          "chunkHash": "1e882e383483d26e6dcc3e93c9ba442868f50ba83adb9577720a511b2b5e4e6b"
+        },
+        {
+          "chunkHash": "f31952c234fa76baef58a911e6b63d4c4fdcecee677313f2dd56b92e48e25748"
+        }
+      ]
+    },
+    {
+      "stripeHash": "a25783ab9a427eb67a9646cd1607aab0709e111e7d3d5445a506f163dd7cb435",
+      "chunkHashes": [
+        {
+          "chunkHash": "7571b079f3927245d186cca4a0b5e4737fd425c7cced7043adf441e63ede9677"
+        },
+        {
+          "chunkHash": "1e882e383483d26e6dcc3e93c9ba442868f50ba83adb9577720a511b2b5e4e6b"
+        },
+        {
+          "chunkHash": "f31952c234fa76baef58a911e6b63d4c4fdcecee677313f2dd56b92e48e25748"
+        },
+        {
+          "chunkHash": "b7e047294766458fb584878148e161a4043de99c9497ad12b746ddfeb402e452"
+        },
+        {
+          "chunkHash": "2483893aaaa2df26bd83b74d780038efe72d9179d63ad982f260fe7bfc7a0605"
+        },
+        {
+          "chunkHash": "665dd6a24aa6041e7d5a5a217747f01e187210cc5e2bff48b7a7ec69fb3a78f0"
+        },
+        {
+          "chunkHash": "d830abb9a2126f562ac51bbc03614572882ca52407c6597bdde653f681e17833"
+        },
+        {
+          "chunkHash": "6bddc6032b2018d19c5d357585c78b8907aa1500c151d3d1e24607b17cda2c13"
+        },
+        {
+          "chunkHash": "773de51a145c7bab8ee347e34528266e088bea3ddf50ce6068a52bef72d98a0a"
+        }
+      ]
+    },
+    {
+      "stripeHash": "09307e7fc09be8d8be7837703f8c9eaab4db1d5673d8116da89f33fb10ae84da",
+      "chunkHashes": [
+        {
+          "chunkHash": "d830abb9a2126f562ac51bbc03614572882ca52407c6597bdde653f681e17833"
+        },
+        {
+          "chunkHash": "6bddc6032b2018d19c5d357585c78b8907aa1500c151d3d1e24607b17cda2c13"
+        },
+        {
+          "chunkHash": "773de51a145c7bab8ee347e34528266e088bea3ddf50ce6068a52bef72d98a0a"
+        },
+        {
+          "chunkHash": "9b61c8841840f7fe86b38e32c370c7701ed97e2913da0006674f323eb014e9a2"
+        },
+        {
+          "chunkHash": "a0b387aa643b26438187fcc70c78a38dc2f4f1ff3ae3e9f6797c21f3d22320e6"
+        },
+        {
+          "chunkHash": "0edfe9be91c78b199e5fe7ae138a2adc34321865de3c38db81fc81b0b9a82ef9"
+        },
+        {
+          "chunkHash": "112b18a0134e4a32d64f762ac22834856abd431d3f6459527bdd1bfb9bc1f52f"
+        },
+        {
+          "chunkHash": "096f91799639e877dbb32b9369c4dbd50a7125c227539527d7c5394c88e3b228"
+        },
+        {
+          "chunkHash": "d3c18b712fb4e3157285ee5408c8cbe34bde571f74245a2f31da1a7ecaf95475"
+        }
+      ]
+    },
+    {
+      "stripeHash": "706e83937df8c6db3eb9bb29e32d7e8e52b95f15c2b82b05a35c33e1bcccafe7",
+      "chunkHashes": [
+        {
+          "chunkHash": "112b18a0134e4a32d64f762ac22834856abd431d3f6459527bdd1bfb9bc1f52f"
+        },
+        {
+          "chunkHash": "096f91799639e877dbb32b9369c4dbd50a7125c227539527d7c5394c88e3b228"
+        },
+        {
+          "chunkHash": "d3c18b712fb4e3157285ee5408c8cbe34bde571f74245a2f31da1a7ecaf95475"
+        },
+        {
+          "chunkHash": "0da762e0315416481f1543f89027c82a54745c271f0504f75cf8ac9c3eb8e965"
+        },
+        {
+          "chunkHash": "931a8b49cc8c993e613ac547fe22e1bb6f7c26b0f4bdad4713f8d161f0fdfce7"
+        },
+        {
+          "chunkHash": "e458e38d61119a3a5ec0c7ae1cb5fa1e9900a2cf4319f787d3979929fd747e1f"
+        },
+        {
+          "chunkHash": "f145aa23f96d2d8c823bccb05f69c43e2b85e033cefaed09723084e4946afc99"
+        },
+        {
+          "chunkHash": "fcc48c8344b0fe212460a41cc2af9b39a28de919a78eea63a5e2772f18e58350"
+        },
+        {
+          "chunkHash": "4e55d8f2dbd70cade06d1e9940f64b2b691e827da5f986d8b19951d1407e5efa"
+        }
+      ]
+    },
+    {
+      "stripeHash": "72dd01084313559b40309191f74683c65f00c692ac3b6e96de13172a3683795e",
+      "chunkHashes": [
+        {
+          "chunkHash": "f145aa23f96d2d8c823bccb05f69c43e2b85e033cefaed09723084e4946afc99"
+        },
+        {
+          "chunkHash": "fcc48c8344b0fe212460a41cc2af9b39a28de919a78eea63a5e2772f18e58350"
+        },
+        {
+          "chunkHash": "4e55d8f2dbd70cade06d1e9940f64b2b691e827da5f986d8b19951d1407e5efa"
+        },
+        {
+          "chunkHash": "79304bc401311efee3f30b3209572360fca954caaf7d010ca286e509698578e6"
+        },
+        {
+          "chunkHash": "4f3a1f4fb4b016be8f35d61478123db87bfdc4dae1b21c7fe541fa998b00db11"
+        },
+        {
+          "chunkHash": "9921dabd8589d87d1fb1e8f792b0653ea6b811f6190a1f9a4282f783eeaca02f"
+        },
+        {
+          "chunkHash": "0ba7cc6605c216d3432b23b421c663950f90808d7b36e32840a699c636ff2527"
+        },
+        {
+          "chunkHash": "88a1acf22ed9d328d0320b42d6ec0a854ec1dffecb7c063513f65bc60ff39a9c"
+        },
+        {
+          "chunkHash": "8fab11222cf7c93af5d2135702c5058cf06ca1bba4858459c5583a096539ce78"
+        }
+      ]
+    },
+    {
+      "stripeHash": "d41aa503f0e187db1dd1f15fffbc7af330b9ac6a8b7725c94ce0431f0c77eff5",
+      "chunkHashes": [
+        {
+          "chunkHash": "0ba7cc6605c216d3432b23b421c663950f90808d7b36e32840a699c636ff2527"
+        },
+        {
+          "chunkHash": "88a1acf22ed9d328d0320b42d6ec0a854ec1dffecb7c063513f65bc60ff39a9c"
+        },
+        {
+          "chunkHash": "8fab11222cf7c93af5d2135702c5058cf06ca1bba4858459c5583a096539ce78"
+        },
+        {
+          "chunkHash": "816012c817f1ee3d26d19ebef24e269d3ec33ae83c8d87af2c6df56421bb0e0e"
+        },
+        {
+          "chunkHash": "1c7dfdb2b0579ccc5540d0af1545d6bc7cb22ef444099366235a9bdc97a16bde"
+        },
+        {
+          "chunkHash": "24b73250265341a85332b97dc98a2d583c582f3d98c81b4c888b3841e6794c83"
+        },
+        {
+          "chunkHash": "df1a1cbde24920e4cdd0b1066dc4b2f33a0110f31c53c3d48905764cfe2ba583"
+        },
+        {
+          "chunkHash": "3c000d5f8e8e72cc4fe139208a8d4acdfc6f709f94b8eae8b8c183df0f2e3b2d"
+        },
+        {
+          "chunkHash": "cfbb304c9634939d197dda64b5d5de5f9ca3e3c325b90b4456765b47a466b01c"
+        }
+      ]
+    },
+    {
+      "stripeHash": "84d1d99ae68e531a317223961117595d74ef693b7c4abeec1529fc0702093862",
+      "chunkHashes": [
+        {
+          "chunkHash": "df1a1cbde24920e4cdd0b1066dc4b2f33a0110f31c53c3d48905764cfe2ba583"
+        },
+        {
+          "chunkHash": "3c000d5f8e8e72cc4fe139208a8d4acdfc6f709f94b8eae8b8c183df0f2e3b2d"
+        },
+        {
+          "chunkHash": "cfbb304c9634939d197dda64b5d5de5f9ca3e3c325b90b4456765b47a466b01c"
+        },
+        {
+          "chunkHash": "70739d8801ac4951c507d74d1ff3f5cd0b4f26e3e5c31a6b151113ab5f474a31"
+        },
+        {
+          "chunkHash": "bd19b271eecd9c68129b2d4724af4a94983868635bdca8bfc4d2bea41fe847d9"
+        },
+        {
+          "chunkHash": "a38aa2fb437bf08080ea81d247c2114e61484387d5704fd2e06f91916ea21271"
+        },
+        {
+          "chunkHash": "c520b4e17aaf9ba009268138da0cddcfadb0de5f41ef344a058e505bc8dbe10d"
+        },
+        {
+          "chunkHash": "09ef58be37d27e52b4401b0eae1fb43bfef7a9a40953037821abbfb7aecd6c30"
+        },
+        {
+          "chunkHash": "34478e53aeb666956407c84ab9be292520380aaa81039acc2154b0d1e59f1193"
+        }
+      ]
+    },
+    {
+      "stripeHash": "8bf32719a6c71b43db4c53f987061c0333930927a666da13c2f6a77698ebe9b9",
+      "chunkHashes": [
+        {
+          "chunkHash": "c520b4e17aaf9ba009268138da0cddcfadb0de5f41ef344a058e505bc8dbe10d"
+        },
+        {
+          "chunkHash": "09ef58be37d27e52b4401b0eae1fb43bfef7a9a40953037821abbfb7aecd6c30"
+        },
+        {
+          "chunkHash": "34478e53aeb666956407c84ab9be292520380aaa81039acc2154b0d1e59f1193"
+        },
+        {
+          "chunkHash": "309ba5c9d7a479fe2e9a7923e84c1726c1dafd78b33f79562bd02e0bbd03cff9"
+        },
+        {
+          "chunkHash": "2a92ee714d447779ffe1495b9dc703d27eb60a29ee839370ca6f0875e9253acb"
+        },
+        {
+          "chunkHash": "1e24437ed0b36d0b6f6a954e8e399aa4f344dc108a043ff46bdc625f21e35fd4"
+        },
+        {
+          "chunkHash": "17882a1779cb4105cc974da990c7c46109f85801e436c78f8061a48430b8141a"
+        },
+        {
+          "chunkHash": "50b4c70c5ab014ece6d841ae773109a62493ea41da5e1fc9ad60b3eca01512e3"
+        },
+        {
+          "chunkHash": "104248993f0546dfa5268f4e5069e1ecf3640f619016092ef3e29c71e0e01b1e"
+        }
+      ]
+    },
+    {
+      "stripeHash": "ed25890bf9635533d860584fa4ae8ad2eefc566dd0b250eb6e6bfae7c1ab6396",
+      "chunkHashes": [
+        {
+          "chunkHash": "17882a1779cb4105cc974da990c7c46109f85801e436c78f8061a48430b8141a"
+        },
+        {
+          "chunkHash": "50b4c70c5ab014ece6d841ae773109a62493ea41da5e1fc9ad60b3eca01512e3"
+        },
+        {
+          "chunkHash": "104248993f0546dfa5268f4e5069e1ecf3640f619016092ef3e29c71e0e01b1e"
+        },
+        {
+          "chunkHash": "9c5d0c2141190094724db6e57ed7e9c662d8a3207e5459fc3bbd6a8edaec9e96"
+        },
+        {
+          "chunkHash": "fc34bdfed73cd3dabc0e49df67b64045af2966fec9f4fca9393e9a4883f3111b"
+        },
+        {
+          "chunkHash": "3e789f15ef5bcf2805e7c429d3cbc69f53a0de653e9b7bc482f662f2699ee32f"
+        },
+        {
+          "chunkHash": "d7ac853af7d22fc5282694925e02e6eb93d8a591172edbdd9fa7dbcb75d7a371"
+        },
+        {
+          "chunkHash": "62cfcb7efae34191301cb2d44c8d76b921b26e5e608370ffa4211f8682b9d8b1"
+        },
+        {
+          "chunkHash": "655b2dab6454eb5ee0d5326fa47f3ae0d71137f838333a4d88f9dca379019f76"
+        }
+      ]
+    },
+    {
+      "stripeHash": "8c546db9c0d15b68cb90aa71064d5d9d549338760da24a6a80821ca71666729c",
+      "chunkHashes": [
+        {
+          "chunkHash": "d7ac853af7d22fc5282694925e02e6eb93d8a591172edbdd9fa7dbcb75d7a371"
+        },
+        {
+          "chunkHash": "62cfcb7efae34191301cb2d44c8d76b921b26e5e608370ffa4211f8682b9d8b1"
+        },
+        {
+          "chunkHash": "655b2dab6454eb5ee0d5326fa47f3ae0d71137f838333a4d88f9dca379019f76"
+        },
+        {
+          "chunkHash": "e3685b2f3f95c705cd620324689d2c57f8e42e98f1425c7e681dfd0c16a6b456"
+        },
+        {
+          "chunkHash": "b0c2c1ee369bea9df172df0bd099ca8563396c8ef1ff4d1208bee085193543a7"
+        },
+        {
+          "chunkHash": "f21b876de95941dc2180107cedccb5dce3a2db6c9b204501e0b8cc36d5642dea"
+        },
+        {
+          "chunkHash": "ba5fa957de221737c54fc7ca456fd97b40db84fb75b246dbbe0c31f70552f488"
+        },
+        {
+          "chunkHash": "71b37e3250365fae1004349a5a8df60d2daf95e35f2bb374e63bef3aa704c2d1"
+        },
+        {
+          "chunkHash": "80de724a5ccae953f679c7ebae3c4e171f2038075e0d13df329656640f68859c"
+        }
+      ]
+    },
+    {
+      "stripeHash": "48a2f42a1e0e9a6534d425f4882935e627ffcfca30d85b65a12b8cb29aeba106",
+      "chunkHashes": [
+        {
+          "chunkHash": "ba5fa957de221737c54fc7ca456fd97b40db84fb75b246dbbe0c31f70552f488"
+        },
+        {
+          "chunkHash": "71b37e3250365fae1004349a5a8df60d2daf95e35f2bb374e63bef3aa704c2d1"
+        },
+        {
+          "chunkHash": "80de724a5ccae953f679c7ebae3c4e171f2038075e0d13df329656640f68859c"
+        },
+        {
+          "chunkHash": "b108bf2dc8040e0b565a41cb96b5a424da0e51bc1a62b6fb4d95453b3afa59ac"
+        },
+        {
+          "chunkHash": "e30790db932f3c8d5451bf40d9b49479e5a796ce6a976ac44e01a589eaa3fd4b"
+        },
+        {
+          "chunkHash": "c44269ead51598f1c499062dc90b3da00ed7ec735f55867a8b2791db7f99ea40"
+        },
+        {
+          "chunkHash": "45d4242c897a7a4973ea849336613f8baf4799b1fa88c0abea11ee20fbf674aa"
+        },
+        {
+          "chunkHash": "5f916d08ff36611bbae543a47098e0ef3d0f784ea5c0d2e5b7be554bf7674018"
+        },
+        {
+          "chunkHash": "9f04b6256ea86097830e903c3c2d707bec308a423fdf114cea74168b107370be"
+        }
+      ]
+    },
+    {
+      "stripeHash": "152e6036dc9b1ce13de997ceb68964727fb93b9668e1b8da047aaf0efb14966b",
+      "chunkHashes": [
+        {
+          "chunkHash": "45d4242c897a7a4973ea849336613f8baf4799b1fa88c0abea11ee20fbf674aa"
+        },
+        {
+          "chunkHash": "5f916d08ff36611bbae543a47098e0ef3d0f784ea5c0d2e5b7be554bf7674018"
+        },
+        {
+          "chunkHash": "9f04b6256ea86097830e903c3c2d707bec308a423fdf114cea74168b107370be"
+        },
+        {
+          "chunkHash": "9806ff20ef914f7d46c9dd54d6ef208b26cf63e7979ceb708b1dc0633b47e60c"
+        },
+        {
+          "chunkHash": "eb259217a6eb39513f4abd05c52809c852d908c4f2e802c4ada694a4fb61bc5b"
+        },
+        {
+          "chunkHash": "6367bdb43d9e2584932620d7207efa06cd7b9531fddf2c3cce37cfe6b6913051"
+        },
+        {
+          "chunkHash": "325edec6026a4f7559e95246d8aaa17d6f55a07df3e08e6f17e1b1270d367b12"
+        },
+        {
+          "chunkHash": "451633ec2d0b02ee6ee9ce903c3f8f5d76ea3e5bfceb60c6263d1aae509e3934"
+        },
+        {
+          "chunkHash": "900dc1930cfb7cad2d355e00f534140dd4bfd1fcf6837d3a7806a14ee10f0ef8"
+        }
+      ]
+    },
+    {
+      "stripeHash": "254b28eb9112d6617a0bd1eecc70687be8be87b6fda3cba845836fcc1832b6db",
+      "chunkHashes": [
+        {
+          "chunkHash": "325edec6026a4f7559e95246d8aaa17d6f55a07df3e08e6f17e1b1270d367b12"
+        },
+        {
+          "chunkHash": "451633ec2d0b02ee6ee9ce903c3f8f5d76ea3e5bfceb60c6263d1aae509e3934"
+        },
+        {
+          "chunkHash": "900dc1930cfb7cad2d355e00f534140dd4bfd1fcf6837d3a7806a14ee10f0ef8"
+        },
+        {
+          "chunkHash": "8cb84b2577717dd71849eae2569d513e744dfbd5acb04d8ab8a88e485c49a09b"
+        },
+        {
+          "chunkHash": "baee5cbdfc4da794a31f4535bbec5806fc2a313353c2812a521ed470e0c7405d"
+        },
+        {
+          "chunkHash": "48d142b8eb6a67aa4ce615e81360619677466333d4362f99abc63b57cac8dbb6"
+        },
+        {
+          "chunkHash": "af6db015c0192bd85ef63cf24124fa50e699b0793ee4d336b6e69b4934aad92a"
+        },
+        {
+          "chunkHash": "7a1189ecbf990e6d79ff43ff68046a1c25c8ad7837d3b55bd1749a9f4f65d0ef"
+        },
+        {
+          "chunkHash": "d5e65914f246826df3098aa55ab04fe32a05aca5dc4ea203999f894dc4aefe44"
+        }
+      ]
+    },
+    {
+      "stripeHash": "a3578554b6806b4e7df8da3bc200f2248ecb500ea39acde86db8efa17e6e55da",
+      "chunkHashes": [
+        {
+          "chunkHash": "af6db015c0192bd85ef63cf24124fa50e699b0793ee4d336b6e69b4934aad92a"
+        },
+        {
+          "chunkHash": "7a1189ecbf990e6d79ff43ff68046a1c25c8ad7837d3b55bd1749a9f4f65d0ef"
+        },
+        {
+          "chunkHash": "d5e65914f246826df3098aa55ab04fe32a05aca5dc4ea203999f894dc4aefe44"
+        },
+        {
+          "chunkHash": "c41c013521259b9411fb2d0713a6b49fa4ffb259d766c1f985ab276bf4a95aa6"
+        },
+        {
+          "chunkHash": "ddc6f1948e14f8dccf6f487711b1c46516768f203f9f650e8bfbfaedb5124368"
+        },
+        {
+          "chunkHash": "0464af4fa4a933179ff63ac8395640677f704518e13df07d1eb7ece900e504db"
+        },
+        {
+          "chunkHash": "ff6912c30f39635039adf777faad81cd567909f14950030529debc1b294d203a"
+        },
+        {
+          "chunkHash": "852571a1a41ddbaec1f7b44cddf674c2e36618911ac6a91e8ee8d62ae66586af"
+        },
+        {
+          "chunkHash": "0b35b4724bc65f6b835332a009b169694f7f5a79ef008b4ae6844d87859a5a55"
+        }
+      ]
+    },
+    {
+      "stripeHash": "1468f0e82eae3a8b399fa23efbe36d2b9c2892848dd7b427bd8bad548bbbec4f",
+      "chunkHashes": [
+        {
+          "chunkHash": "ff6912c30f39635039adf777faad81cd567909f14950030529debc1b294d203a"
+        },
+        {
+          "chunkHash": "852571a1a41ddbaec1f7b44cddf674c2e36618911ac6a91e8ee8d62ae66586af"
+        },
+        {
+          "chunkHash": "0b35b4724bc65f6b835332a009b169694f7f5a79ef008b4ae6844d87859a5a55"
+        },
+        {
+          "chunkHash": "d26d0fd26d38b317857038cb84c1ff5f761f5db0ee28831dd6d7924e6c9b7534"
+        },
+        {
+          "chunkHash": "1b045dfbd88e6e28d0aa9a6aa0a9c4121db3ff8def4123979bb60a201113a5bc"
+        },
+        {
+          "chunkHash": "30c4d6e91acd135eed9e720c38c74096883e9f4355eb06ed6bf9a587639ca28a"
+        },
+        {
+          "chunkHash": "938cc5032f65b1c4dc3603bae923bb557d030747cbd13aef40fa1287af622aa8"
+        },
+        {
+          "chunkHash": "95152ead5b90eb90ae4c949c3d9ce97886d2c4b0dde43903b0bc5de1f6fb2629"
+        },
+        {
+          "chunkHash": "b3d42854f1837685e48007d01fd69c0fe9b88ba916b879a2e0dc2037ecc08a0e"
+        }
+      ]
+    },
+    {
+      "stripeHash": "ccb4e30754428f61e9497aa4d255370a5cc170dffb3ac3bf4e518f62fa954837",
+      "chunkHashes": [
+        {
+          "chunkHash": "938cc5032f65b1c4dc3603bae923bb557d030747cbd13aef40fa1287af622aa8"
+        },
+        {
+          "chunkHash": "95152ead5b90eb90ae4c949c3d9ce97886d2c4b0dde43903b0bc5de1f6fb2629"
+        },
+        {
+          "chunkHash": "b3d42854f1837685e48007d01fd69c0fe9b88ba916b879a2e0dc2037ecc08a0e"
+        },
+        {
+          "chunkHash": "5dbf6bfee4e2f54947e476a2fd3c2392abcfa28534a02edbf355bd1d2a453426"
+        },
+        {
+          "chunkHash": "a25dcf4f417cbf9ef6e7341f8237fcaf9a21305692fc77b1adc28d38976d9d34"
+        },
+        {
+          "chunkHash": "6bf894792fa8146fff5e069ceee96d14063c1079222467f6e802bb0b608d5531"
+        },
+        {
+          "chunkHash": "b52bf274552997ba6d5298757afea20336031663763f5dab9f68320fc50e53cf"
+        },
+        {
+          "chunkHash": "42a12b745f0eb08df6515abbc03d38f08024e71c7ed169b0eea46878c9192f7f"
+        },
+        {
+          "chunkHash": "8660effef09de5382b3c8a1bd283d9ddd9ebc1702535e0035075d869027de495"
+        }
+      ]
+    },
+    {
+      "stripeHash": "183d30d1fa298954b1222207d9dd0a6dfa523d549f0dc48bc4bfe5d6ed5c31bc",
+      "chunkHashes": [
+        {
+          "chunkHash": "b52bf274552997ba6d5298757afea20336031663763f5dab9f68320fc50e53cf"
+        },
+        {
+          "chunkHash": "42a12b745f0eb08df6515abbc03d38f08024e71c7ed169b0eea46878c9192f7f"
+        },
+        {
+          "chunkHash": "8660effef09de5382b3c8a1bd283d9ddd9ebc1702535e0035075d869027de495"
+        },
+        {
+          "chunkHash": "21e875204b9c0a6abbda120a6d8e370b7cdd08cde604f81c1d55691ad4565807"
+        },
+        {
+          "chunkHash": "656eb8b96e82d8f038a20e5a23c99a1527045a1f985b0a7ba1da9256f9d9edde"
+        },
+        {
+          "chunkHash": "3f61df9154f23de792a2e6ea83991f0feda71fb5b61f1019d7b920f04392e972"
+        },
+        {
+          "chunkHash": "e2e60e4a1796086006475a6e1e81ee75f02b78583744711970cfe87f990c4bed"
+        },
+        {
+          "chunkHash": "39368723235fb77c761dde2ca46ad69bca425a6b6cb4be62c46c9e762ba7fd20"
+        },
+        {
+          "chunkHash": "c94d4173af65318d7e1db080b95bd3e02b4b9762d7ad212857ef8f705927819f"
+        }
+      ]
+    },
+    {
+      "stripeHash": "287373206a91b624406df6b49c15e431639e079797133750e71ad56c9cec72d5",
+      "chunkHashes": [
+        {
+          "chunkHash": "e2e60e4a1796086006475a6e1e81ee75f02b78583744711970cfe87f990c4bed"
+        },
+        {
+          "chunkHash": "39368723235fb77c761dde2ca46ad69bca425a6b6cb4be62c46c9e762ba7fd20"
+        },
+        {
+          "chunkHash": "c94d4173af65318d7e1db080b95bd3e02b4b9762d7ad212857ef8f705927819f"
+        },
+        {
+          "chunkHash": "d4cc0dbcb47108bae278293bb0dcd942328d0ded37684404ddab9504f593f7a6"
+        },
+        {
+          "chunkHash": "cf0fd53bfa19e1ea8f7bf781aae6ccdefd7048e26829764469666e36311addd4"
+        },
+        {
+          "chunkHash": "e27249171e4f841e39c9d3748cc0780b91a59c750286a85d73a7528655efab0c"
+        },
+        {
+          "chunkHash": "57181b1dce8b3b17bdf891e6d89c5b6daa3a5fd01ae2877905caac18b8559930"
+        },
+        {
+          "chunkHash": "1f1f24a583f2bdc29a2ae8de3f12a82a2dd7998f15b3c8cbcf86d40f69225ab6"
+        },
+        {
+          "chunkHash": "9ecc9ade31bbc8aaa88ed2147bbd97da959352eb4a2361b8e98a9d47f1a53739"
+        }
+      ]
+    },
+    {
+      "stripeHash": "931620b0583aae31c328b7fddb7075bec9e3f440605f2d43b77609a5b832766d",
+      "chunkHashes": [
+        {
+          "chunkHash": "57181b1dce8b3b17bdf891e6d89c5b6daa3a5fd01ae2877905caac18b8559930"
+        },
+        {
+          "chunkHash": "1f1f24a583f2bdc29a2ae8de3f12a82a2dd7998f15b3c8cbcf86d40f69225ab6"
+        },
+        {
+          "chunkHash": "9ecc9ade31bbc8aaa88ed2147bbd97da959352eb4a2361b8e98a9d47f1a53739"
+        },
+        {
+          "chunkHash": "ecf834983dc9277edbaa242136f383ee0ef8cdd63e6dcc7095e8c4a9267d6939"
+        },
+        {
+          "chunkHash": "a0a8272041769d529d2d4c4a533f014779ec910313582822332dcaf67e75634c"
+        },
+        {
+          "chunkHash": "14cbf58c420d02b7eb7d46f20072b4cdd3b2cc365371360bce4e19e1737c74e5"
+        },
+        {
+          "chunkHash": "5a18d5da9b1377597ab658405b79cc07a0e2e0c79e4f32380c7293049538a5a1"
+        },
+        {
+          "chunkHash": "c2aa30a88fcbdcfe677b07ddb60ff0fa92ada2a9f5ff6430f601d02f83b608ba"
+        },
+        {
+          "chunkHash": "d1c0e4d491f3f8de37d359f0dc09311e9ea90efb6e9e7140483cedf1426a964b"
+        }
+      ]
+    },
+    {
+      "stripeHash": "8b68695ac5126f597729873fcc1d715bc1ce829bb9b25a9daf1737aa9039f69e",
+      "chunkHashes": [
+        {
+          "chunkHash": "5a18d5da9b1377597ab658405b79cc07a0e2e0c79e4f32380c7293049538a5a1"
+        },
+        {
+          "chunkHash": "c2aa30a88fcbdcfe677b07ddb60ff0fa92ada2a9f5ff6430f601d02f83b608ba"
+        },
+        {
+          "chunkHash": "d1c0e4d491f3f8de37d359f0dc09311e9ea90efb6e9e7140483cedf1426a964b"
+        },
+        {
+          "chunkHash": "cec5ac9cd2f5a2fc9fe48a6dd7fa54b2b8d7f6f60c36a33dfa0918a9b3d769a9"
+        },
+        {
+          "chunkHash": "96e8965a0f88bf0363830478b2ef29e6911857483bfc038e636009380d26135b"
+        },
+        {
+          "chunkHash": "26b2f04097e8fb18cb8542e9879116ce0d1fdd7bdd3bba4a62ceae98e57b8238"
+        },
+        {
+          "chunkHash": "c1af2a2885b4c6d7871f108bee6a38dc607e33e2758e47d2acd2f5ecf1c9c941"
+        },
+        {
+          "chunkHash": "0c5d7c38eb95c28ada7641843d089a02ee6207ead50eae1d49aa3c4497407a2c"
+        },
+        {
+          "chunkHash": "9eeccbd67e5c589e42817c9153167c064caa9b230f1ebcc392e96a75d8117488"
+        }
+      ]
+    },
+    {
+      "stripeHash": "1ae427d961764f3f39a1e85c10c68bef04ee0a83d089961919d0dff5b1e10973",
+      "chunkHashes": [
+        {
+          "chunkHash": "c1af2a2885b4c6d7871f108bee6a38dc607e33e2758e47d2acd2f5ecf1c9c941"
+        },
+        {
+          "chunkHash": "0c5d7c38eb95c28ada7641843d089a02ee6207ead50eae1d49aa3c4497407a2c"
+        },
+        {
+          "chunkHash": "9eeccbd67e5c589e42817c9153167c064caa9b230f1ebcc392e96a75d8117488"
+        },
+        {
+          "chunkHash": "957313105deed72c078a41bcea48cf3d7197c1f31a23a04f09f500a2e38a8546"
+        },
+        {
+          "chunkHash": "e07c7a96a699559888150da4de2aa3e93dee82f4fd0aa047a4c6eaae8febf4e4"
+        },
+        {
+          "chunkHash": "058aef62afe79c6aade1e12d4a7e2b0f6bdcbb395272d9e9460945059e297244"
+        },
+        {
+          "chunkHash": "1994d1fda2d416a334488d666cbb042c9314906089bd8e8d1dc24867b8126650"
+        },
+        {
+          "chunkHash": "4cfc5d75aa9cbd6f944d847bc2e7b1a20d9f8f04c5e52829b2899d71ec97c91f"
+        },
+        {
+          "chunkHash": "5271a958c7bd9cc0a381eabc1c6e44d01ad74f67ecdfd4faa0d54dc344f8c3c8"
+        }
+      ]
+    },
+    {
+      "stripeHash": "268039f31d6796e99c6aa65aa9959e163de05a02cb54b296ac89ce1a3c5c5949",
+      "chunkHashes": [
+        {
+          "chunkHash": "1994d1fda2d416a334488d666cbb042c9314906089bd8e8d1dc24867b8126650"
+        },
+        {
+          "chunkHash": "4cfc5d75aa9cbd6f944d847bc2e7b1a20d9f8f04c5e52829b2899d71ec97c91f"
+        },
+        {
+          "chunkHash": "5271a958c7bd9cc0a381eabc1c6e44d01ad74f67ecdfd4faa0d54dc344f8c3c8"
+        },
+        {
+          "chunkHash": "52d2a0dde0ae8414d3c854d8595710cd01df80ef797190fdd1023b72ed8a5876"
+        },
+        {
+          "chunkHash": "63e72ffb0f5eed869eb9482560f8517e046b70598037ce97eeab70b9fc9a1c8d"
+        },
+        {
+          "chunkHash": "e0171b76efab42a5dae08f36dac84a1a9be4bcb8a60d582195dbeee351bbd2aa"
+        },
+        {
+          "chunkHash": "4d251808451bb23e7611880c8fc42325f80ac0739115351ba0d767b9abb27c1d"
+        },
+        {
+          "chunkHash": "1fff6c5d8c86e0bdafbad18b33419f80d1d446556356f9f619f41e8882ca6743"
+        },
+        {
+          "chunkHash": "2cffbb28ebf44c17de51ef81b5460faf482c48c1a5edd278df33fd2ed013651f"
+        }
+      ]
+    },
+    {
+      "stripeHash": "cc551e7724c0bd4d279725e4650206a146f69a0340114e25121e1a0b0e328e7a",
+      "chunkHashes": [
+        {
+          "chunkHash": "4d251808451bb23e7611880c8fc42325f80ac0739115351ba0d767b9abb27c1d"
+        },
+        {
+          "chunkHash": "1fff6c5d8c86e0bdafbad18b33419f80d1d446556356f9f619f41e8882ca6743"
+        },
+        {
+          "chunkHash": "2cffbb28ebf44c17de51ef81b5460faf482c48c1a5edd278df33fd2ed013651f"
+        },
+        {
+          "chunkHash": "d6ffe9fbed5610ca00c32513a03f7ab4d762dcd8144d05ae743394d122357c59"
+        },
+        {
+          "chunkHash": "86dc0eaa260ead4698f1a9231e8a19b76634611afaa5812b4743506cf5deb550"
+        },
+        {
+          "chunkHash": "412b1434513441e00044aa93b7d1284ff30445c8a32e47d6c5f4f74aa10bc941"
+        },
+        {
+          "chunkHash": "377f70447f956fe5c9e8ea7c455418a8172342d8a0fc214ebceaa1ca6d718c99"
+        },
+        {
+          "chunkHash": "8c3ad88c08659111dda6681039cec4d747c9b3803135cb292d10503c677964d7"
+        },
+        {
+          "chunkHash": "ef5c5d8f5505a1bd8fd28d26d36c2f89a3b66f359f3a55b7f06435d8a4a42134"
+        }
+      ]
+    },
+    {
+      "stripeHash": "4dbe22a780bfcb74a11723771d3156a896042f7ba31b94daa0198a53418693f4",
+      "chunkHashes": [
+        {
+          "chunkHash": "377f70447f956fe5c9e8ea7c455418a8172342d8a0fc214ebceaa1ca6d718c99"
+        },
+        {
+          "chunkHash": "8c3ad88c08659111dda6681039cec4d747c9b3803135cb292d10503c677964d7"
+        },
+        {
+          "chunkHash": "076991ab26a054bec3ee3639bab36dd87c4bf87bfdfe7326e33a696c6d456087"
+        },
+        {
+          "chunkHash": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7"
+        },
+        {
+          "chunkHash": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7"
+        },
+        {
+          "chunkHash": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7"
+        },
+        {
+          "chunkHash": "e9a182007561537f641b56f20d97498749b5ca4248282d807d96e0f32d6dae55"
+        },
+        {
+          "chunkHash": "dc0c4b47072dbc16bfd83df113a7b21dff7c06ca03de5591593270fca31de210"
+        },
+        {
+          "chunkHash": "b85ca2774d67ffab1a8cabe6a3919eb9d333d811448b8af76786821ba4fdfc37"
+        }
+      ]
+    }
+  ]
+}
