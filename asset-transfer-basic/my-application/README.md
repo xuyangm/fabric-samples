@@ -29,6 +29,14 @@ git config --global http.postBuffer 1048576000
 
 5. ```./network.sh up createChannel -c mychannel -ca```
 
+To add more organization follow this steps :
+
+5-1.```cd addOrg3```
+5-2.``` ./addOrg3.sh up -c mychannel -ca```
+5-3.```cd ../addOrg4```
+5-4.``` ./addOrg4.sh up -c mychannel -ca```
+5-4.``` cd ..```
+
 6. ```./network.sh deployCC -ccn basic -ccp ../asset-transfer-basic/chaincode-go/ -ccl go```
 
 7. ```cd ../asset-transfer-basic/my-application/```
@@ -76,3 +84,4 @@ The output is stored as a file named "out".
 cd ../../test-network
 ./network.sh down
 ```
+17.
