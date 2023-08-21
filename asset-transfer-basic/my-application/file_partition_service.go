@@ -95,16 +95,7 @@ func initializeSmartContract() {
 	contract = network.GetContract(chaincodeName)
 }
 
-func (s *server) PartitionFile(ctx context.Context, request *pb.FilePartitionRequest) (*pb.FilePartitionResponse, error) {
-	fmt.Println("Start partitioning a file...")
-	fileObj := File{}
-
-	// Accept file from remote nodes
-	fileContent := request.Data
-	fileHash := utils.GetHash(fileContent)
-	fileObj.SetHashValue(fileHash)
-	fmt.Println("The hash of this file is ", fileHash)
-
+func setFlag(request *pb.FilePartitionRequest, fileHash string) {
 	// Add access rules
 	success, err := contract.SubmitTransaction("SetFlag", request.Flag, fileHash)
 	if err != nil {
@@ -132,7 +123,15 @@ func (s *server) PartitionFile(ctx context.Context, request *pb.FilePartitionReq
 		}
 		fmt.Println("Set tokens ", string(success))
 	}
+}
 
+func storeChunk(request *pb.FilePartitionRequest) {
+	fileObj := File{}
+
+	// Accept file from remote nodes
+	fileContent := request.Data
+	fileHash := utils.GetHash(fileContent)
+	fileObj.SetHashValue(fileHash)
 	// Divide file into stripes
 	// var stripes []Stripe
 	for i := 0; i < len(fileContent); i += utils.StripeSize {
@@ -148,7 +147,7 @@ func (s *server) PartitionFile(ctx context.Context, request *pb.FilePartitionReq
 
 		stripeObj := Stripe{}
 		stripeObj.SetHashValue(utils.GetHash(data))
-		fmt.Println("Chunk number: ", len(encodedChunks))
+		// fmt.Println("Chunk number: ", len(encodedChunks))
 		for _, chunk := range encodedChunks {
 			chunkHash := utils.GetHash(chunk)
 			chunkObj := Chunk{}
@@ -177,22 +176,18 @@ func (s *server) PartitionFile(ctx context.Context, request *pb.FilePartitionReq
 			}
 
 			// send the request and get the response
-			result, err := stub.StoreChunk(context.Background(), rq)
+			_, err = stub.StoreChunk(context.Background(), rq)
 			if err != nil {
 				log.Fatalf("Failed to store chunk: %v", err)
 			}
-			fmt.Printf("Store chunk %s to node %s %s\n", chunkHash, nodeID, result.Status)
+			// fmt.Printf("Store chunk %s to node %s %s\n", chunkHash, nodeID, result.Status)
 
 		}
 
 		fileObj.AddStripe(stripeObj)
 	}
+	fmt.Printf("Store finished\n")
 
-	// Marshal fileObj to json and print it to a file
-	// jsonFile, err := json.Marshal(fileObj)
-	// if err != nil {
-	// 	log.Fatalf("Failed to marshal file object: %v", err)
-	// }
 	// Marshal fileObj to json and print it to a file
 	jsonFile, err := json.MarshalIndent(fileObj, "", "  ")
 	if err != nil {
@@ -204,10 +199,15 @@ func (s *server) PartitionFile(ctx context.Context, request *pb.FilePartitionReq
 		log.Fatalf("Failed to write file: %v", err)
 	}
 
+	fmt.Printf("Encode finished\n")
+
 	_, err = contract.SubmitTransaction("StoreFileTree", fileObj.FileHash, string(jsonFile))
 	if err != nil {
 		log.Fatalf("Failed to Submit transaction: %v", err)
 	}
+
+	fmt.Printf("To Blockchain finished\n")
+
 	// Example of getting stored file tree
 	// result, err = contract.EvaluateTransaction("QueryFileTree", fileObj.FileHash)
 	// if err != nil {
@@ -222,6 +222,55 @@ func (s *server) PartitionFile(ctx context.Context, request *pb.FilePartitionReq
 	// 	log.Fatalf("Failed to unmarshal json: %v", err)
 	// }
 	// fmt.Printf("The file hash: %s\n", nFileObj.FileHash)
+}
+
+func (s *server) PartitionFile(ctx context.Context, request *pb.FilePartitionRequest) (*pb.FilePartitionResponse, error) {
+	fmt.Println("Start partitioning a file...")
+	fileObj := File{}
+
+	// Accept file from remote nodes
+	fileContent := request.Data
+	fileHash := utils.GetHash(fileContent)
+	fileObj.SetHashValue(fileHash)
+	fmt.Println("The hash of this file is ", fileHash)
+
+	go setFlag(request, fileHash)
+
+	// Divide file into stripes
+	for i := 0; i < len(fileContent); i += utils.StripeSize {
+		data := fileContent[i:min(i+utils.StripeSize, len(fileContent))]
+		if len(data) < utils.StripeSize {
+			data = append(data, make([]byte, utils.StripeSize-len(data))...)
+		}
+
+		encodedChunks, err := utils.Encode(utils.N, utils.K, data)
+		if err != nil {
+			log.Fatalf("Failed to encode file: %v", err)
+		}
+
+		stripeObj := Stripe{}
+		stripeObj.SetHashValue(utils.GetHash(data))
+		for _, chunk := range encodedChunks {
+			chunkHash := utils.GetHash(chunk)
+			chunkObj := Chunk{}
+			chunkObj.SetHashValue(chunkHash)
+			stripeObj.AddChunk(chunkObj)
+
+			if _, err := os.Stat("memory"); os.IsNotExist(err) {
+				os.Mkdir("memory", 0755)
+			}
+			
+			// Store the chunk in local memory folder
+			err := ioutil.WriteFile(fmt.Sprintf("memory/%s", chunkHash), chunk, 0644)
+			if err != nil {
+				log.Fatalf("Failed to store chunk: %v", err)
+			}
+		}
+
+		fileObj.AddStripe(stripeObj)
+	}
+
+	go storeChunk(request)
 
 	return &pb.FilePartitionResponse{Status: "SUCCESS"}, nil
 }
@@ -241,8 +290,12 @@ func main() {
 		log.Fatalf("Failed to listen: %v", err)
 	}
 
+	opts := []grpc.ServerOption{
+		grpc.MaxRecvMsgSize(1024 * 1024 * 1024), // Set the maximum receive message size (in this case, 10MB)
+	}
+
 	// Create a new gRPC server
-	s := grpc.NewServer()
+	s := grpc.NewServer(opts...)
 
 	// Register the chunk storage server
 	pb.RegisterFilePartitionServer(s, &server{})
