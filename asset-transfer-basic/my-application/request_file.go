@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"math/big"
 	"log"
 	"os"
 	"flag"
@@ -19,24 +20,31 @@ import (
 
 var (
 	fileHash = flag.String("hash", "", "the hash value of the requested file")
-	pk = flag.String("pk", "client 1", "the public key of the client. Use `client 1` for simplicity")
 	contract *gateway.Contract
 )
 
+type Slot struct {
+	StartSlot    int     `json:"startSlot"`
+	EndSlot      int     `json:"endSlot"`
+}
+
+type HashSlotTable struct {
+	HST map[string]Slot `json:"hashSlotTable"`
+}
+
 func main() {
 	flag.Usage = func() {
-		fmt.Println("Usage: ./request_file [-h] [-hash string] [-pk string]")
+		fmt.Println("Usage: ./request_file [-h] [-hash string]")
 		flag.PrintDefaults()
 	}
 	flag.Parse()
 
 	initializeSmartContract()
-	// Example of getting stored file tree
-	result, err := contract.EvaluateTransaction("QueryFileTree", *fileHash, *pk)
+	result, err := contract.EvaluateTransaction("GetFileTree", *fileHash)
 	if err != nil {
 		log.Fatalf("Failed to evaluate transaction: %v", err)
 	}
-	// Example of unmarshalling b to a json object
+
 	b := []byte(result)
 	var fileObj File
 	err = json.Unmarshal(b, &fileObj)
@@ -44,9 +52,18 @@ func main() {
 		log.Fatalf("Failed to unmarshal json: %v", err)
 	}
 
+	result, err = contract.EvaluateTransaction("GetHashSlotTable")
+	if err != nil {
+		log.Fatalf("Failed to evaluate transaction: %v", err)
+	}
+	var tree HashSlotTable
+	b = []byte(result)
+	err = json.Unmarshal(b, &tree)
+	if err != nil {
+		log.Fatalf("Failed to unmarshal json: %v", err)
+	}
 	finalFile := []byte{}
 
-	// Iterate through each stripe in the file object
 	for _, stripe := range fileObj.StripeHashes {
 		stripeBytes := make([][]byte, len(stripe.ChunkHashes))
 		// Create a channel to synchronize the goroutines
@@ -55,14 +72,24 @@ func main() {
 		// Record the corresponding storage node and index for each chunk
 		hashToID := make(map[string]string)
 		hashToIndex := make(map[string][]int)
+
+		// Calculate slot ID
+		stripeHash := stripe.StripeHash
+		hashInt := new(big.Int)
+		hashInt.SetString(stripeHash, 16)
+		hashMod := hashInt.Mod(hashInt, big.NewInt(int64(utils.NumOfSlots)))
+		slotID := int(hashMod.Int64())
+		var nodeID string
+		for id, slot := range tree.HST {
+			if slotID >= slot.StartSlot && slotID <= slot.EndSlot {
+				nodeID = id
+			}
+		}
+
 		for i, chunk := range stripe.ChunkHashes {
 			chunkHash := chunk.ChunkHash
-			nodeID, err := contract.EvaluateTransaction("QueryNodeID", chunkHash, utils.BlockHeight)
-			if err != nil {
-				log.Fatalf("Failed to evaluate transaction: %v", err)
-			}
 
-			hashToID[chunkHash] = string(nodeID)
+			hashToID[chunkHash] = nodeID
 			if _, ok := hashToIndex[chunkHash]; ok {
 				hashToIndex[chunkHash] = append(hashToIndex[chunkHash], i)
 			} else {
@@ -71,8 +98,6 @@ func main() {
 		}
 		
 		// Start N goroutines to get chunk data and stop when receiving K replies
-		// var wg sync.WaitGroup
-		// wg.Add(utils.N)
 		for _, chunk := range stripe.ChunkHashes {
 			chunkHash := chunk.ChunkHash
 			go requestChunk(hashToID[chunkHash], chunkHash, ch)
@@ -93,9 +118,6 @@ func main() {
 			log.Fatalf("Failed to decode: %v", err)
 		}
 		finalFile = append(finalFile, stripeData...)
-
-		// wg.Wait()
-		// defer close(ch)
 	}
 
 
@@ -206,7 +228,6 @@ func initializeSmartContract() {
 }
 
 func requestChunk(addr string, chunkHash string, ch chan []byte) {
-	// defer wg.Done()
 	// connect the remote node
 	conn, err := grpc.Dial(addr, grpc.WithInsecure())
 	if err != nil {
@@ -218,6 +239,7 @@ func requestChunk(addr string, chunkHash string, ch chan []byte) {
 	rq := &pb.ChunkRequest{
 		Hash:  chunkHash,
 	}
+
 	chunkData, err := stub.GetChunk(context.Background(), rq)
 	if err != nil {
 		log.Fatalf("Failed to get chunk: %v", err)

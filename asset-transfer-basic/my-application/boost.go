@@ -10,27 +10,14 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"flag"
-	"strconv"
 	"path/filepath"
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/core/config"
 	"github.com/hyperledger/fabric-sdk-go/pkg/gateway"
-)
-
-var (
-	nodeID = flag.String("nodeID", "localhost:50052", "initialize at least one node")
-	weight = flag.Int("weight", 100, "initialize the node weight")
-	blockHeight = flag.Int("blockHeight", 1, "initialize the version of hash slot table")
+	utils "github.com/xuyangm/fabric-samples/asset-transfer-basic/my-application/utils"
 )
 
 func main() {
-	flag.Usage = func() {
-		fmt.Println("Usage: ./boost [-h] [-nodeID string] [-weight int] [-blockHeight int]")
-		flag.PrintDefaults()
-	}
-	flag.Parse()
-
 	log.Println("============ application-golang starts ============")
 
 	err := os.Setenv("DISCOVERY_AS_LOCALHOST", "true")
@@ -97,25 +84,21 @@ func main() {
 	}
 	log.Println(string(result))
 
-	result, err = contract.SubmitTransaction("UpdateNodeWeight", *nodeID, strconv.Itoa(*weight))
+	for i:=0; i<len(utils.MasterNodes); i++ {
+		result, err = contract.SubmitTransaction("UpdateOrgWeight", utils.MasterNodes[i], utils.Weights[i])
+		if err != nil {
+			log.Fatalf("Failed to submit transaction: %v", err)
+		}
+		log.Println(string(result))
+	}
+
+	result, err = contract.SubmitTransaction("CreateHashSlotTable")
 	if err != nil {
 		log.Fatalf("Failed to Submit transaction: %v", err)
 	}
 	log.Println(string(result))
 
-	result, err = contract.EvaluateTransaction("QueryNodeWeight", *nodeID)
-	if err != nil {
-		log.Fatalf("Failed to evaluate transaction: %v", err)
-	}
-	log.Println(string(result))
-
-	result, err = contract.SubmitTransaction("CreateVersionedHashSlot", strconv.Itoa(*blockHeight))
-	if err != nil {
-		log.Fatalf("Failed to Submit transaction: %v", err)
-	}
-	log.Println(string(result))
-
-	result, err = contract.EvaluateTransaction("GetHashSlotTable", strconv.Itoa(*blockHeight))
+	result, err = contract.EvaluateTransaction("GetHashSlotTable")
 	if err != nil {
 		log.Fatalf("Failed to evaluate transaction: %v", err)
 	}

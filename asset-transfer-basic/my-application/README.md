@@ -63,7 +63,7 @@ Terminal 2 (Use ./file_partition_service -h to see help):
 ```
 ./store_file
 ```
-The file hash will be shown on the terminal. The chunks are stored in the folder named "memory".
+The file hash will be shown on the terminal. The chunks are stored in the folders named "memory1" and "memory2".
 
 15. To request a file (Use ./request_file -h to see help):
 ```
@@ -75,4 +75,15 @@ The output is stored as a file named "out".
 ```
 cd ../../test-network
 ./network.sh down
+```
+
+17. Quick test:
+```
+./file_partition_service
+./chunk_storage_service -port=":50052"
+./chunk_storage_service -port=":50053"
+./chunk_storage_service -port=":50054"
+./store_file
+./request_file -hash="xxx"
+diff in out
 ```
