@@ -20,7 +20,17 @@ message ChunkResponse {
   bytes data = 1;
 }
 
+message LinkStorageRequest {
+  string hash = 1;
+  string id = 2;
+}
+
+message LinkStorageResponse {
+  string status = 1;
+}
+
 service ChunkStorage {
   rpc StoreChunk(ChunkStorageRequest) returns (ChunkStorageResponse);
   rpc GetChunk(ChunkRequest) returns (ChunkResponse);
+  rpc StoreLink(LinkStorageRequest) returns (LinkStorageResponse);
 }

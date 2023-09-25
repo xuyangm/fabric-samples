@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type ChunkStorageClient interface {
 	StoreChunk(ctx context.Context, in *ChunkStorageRequest, opts ...grpc.CallOption) (*ChunkStorageResponse, error)
 	GetChunk(ctx context.Context, in *ChunkRequest, opts ...grpc.CallOption) (*ChunkResponse, error)
+	StoreLink(ctx context.Context, in *LinkStorageRequest, opts ...grpc.CallOption) (*LinkStorageResponse, error)
 }
 
 type chunkStorageClient struct {
@@ -52,12 +53,22 @@ func (c *chunkStorageClient) GetChunk(ctx context.Context, in *ChunkRequest, opt
 	return out, nil
 }
 
+func (c *chunkStorageClient) StoreLink(ctx context.Context, in *LinkStorageRequest, opts ...grpc.CallOption) (*LinkStorageResponse, error) {
+	out := new(LinkStorageResponse)
+	err := c.cc.Invoke(ctx, "/messages.ChunkStorage/StoreLink", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ChunkStorageServer is the server API for ChunkStorage service.
 // All implementations must embed UnimplementedChunkStorageServer
 // for forward compatibility
 type ChunkStorageServer interface {
 	StoreChunk(context.Context, *ChunkStorageRequest) (*ChunkStorageResponse, error)
 	GetChunk(context.Context, *ChunkRequest) (*ChunkResponse, error)
+	StoreLink(context.Context, *LinkStorageRequest) (*LinkStorageResponse, error)
 	mustEmbedUnimplementedChunkStorageServer()
 }
 
@@ -70,6 +81,9 @@ func (UnimplementedChunkStorageServer) StoreChunk(context.Context, *ChunkStorage
 }
 func (UnimplementedChunkStorageServer) GetChunk(context.Context, *ChunkRequest) (*ChunkResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetChunk not implemented")
+}
+func (UnimplementedChunkStorageServer) StoreLink(context.Context, *LinkStorageRequest) (*LinkStorageResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StoreLink not implemented")
 }
 func (UnimplementedChunkStorageServer) mustEmbedUnimplementedChunkStorageServer() {}
 
@@ -120,6 +134,24 @@ func _ChunkStorage_GetChunk_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ChunkStorage_StoreLink_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LinkStorageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChunkStorageServer).StoreLink(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/messages.ChunkStorage/StoreLink",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChunkStorageServer).StoreLink(ctx, req.(*LinkStorageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ChunkStorage_ServiceDesc is the grpc.ServiceDesc for ChunkStorage service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -134,6 +166,10 @@ var ChunkStorage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetChunk",
 			Handler:    _ChunkStorage_GetChunk_Handler,
+		},
+		{
+			MethodName: "StoreLink",
+			Handler:    _ChunkStorage_StoreLink_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

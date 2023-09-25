@@ -6,10 +6,6 @@ package messages;
 
 message FilePartitionRequest {
   bytes data = 1;
-  string flag = 2;
-  string permission = 3;
-  string banned = 4;
-  int32 token = 5; 
 }
 
 message FilePartitionResponse {
