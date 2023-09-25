@@ -4,13 +4,12 @@ The chaincode of the decentralized storage system. Only modify ``chaincode-go/ch
 
 ## Functions
 
-- ``UpdateNodeWeight``: updating the weight of a node.
-- ``QueryNodeWeight``: querying the weight of a node.
-- ``CreateVersionedHashSlot``: creating versioned hash slot table.
-- ``QueryNodeID``: given the hash value of a file, querying which node should be used to store the file.
-- ``GetHashSlotTable``: given a version number, querying the versioned hash slot table. 
+- ``UpdateOrgWeight``: updating the weight of a master node.
+- ``GetOrgID``: given the hash value of a file, querying which org should be used to store the file.
+- ``CreateHashSlotTable``: creating inter-org hash slot table.
+- ``GetHashSlotTable``: querying the inter-org hash slot table. 
+- ``GetFileTree``: querying the File object
 - ``StoreFileTree``: storing the File object (structured like a tree).
-- ``QueryFileTree``: querying the File object
 
 ## How to Install and Run
 
