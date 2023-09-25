@@ -23,7 +23,7 @@ type HashSlotTable struct {
 }
 
 type WeightTable struct {
-	WT map[string]int `json:"nodeWeightTable"`
+	WT map[string]int `json:"orgWeightTable"`
 }
 
 // storing the file tree
@@ -40,38 +40,14 @@ type FileTree struct {
 	StripeHashes []StripeTree  `json:"stripeHashes"`
 }
 
-// For access control
-type AccessRule struct {
-	Flag map[string]string `json:"flag"`
-	PermissionList map[string][]string `json:"permissionList"`
-	BannedList map[string][]string `json:"bannedList"`
-	Tokens map[string]int `json:"tokens"`
-}
-
-// For privacy control
-type PrivacyRule struct {
-	KnownAreas map[string][]string `json:"knownAreas"`
-}
-
 var weightTableKey = "wt"
-var accessRuleKey = "AccessRule"
-var privacyRuleKey = "PrivacyRule"
+var hashSlotKey = "slt"
 var numOfSlots = 16384
 
 func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) error {
+	// Create an empty weight table to initialize the weight of each org
 	weightTable := WeightTable{
 		WT: make(map[string]int),
-	}
-
-	accessRule := AccessRule{
-		Flag: make(map[string]string),
-		PermissionList: make(map[string][]string),
-		BannedList: make(map[string][]string),
-		Tokens: make(map[string]int),
-	}
-
-	privacyRule := PrivacyRule{
-		KnownAreas: make(map[string][]string),
 	}
 
 	weightTableJSON, err := json.Marshal(weightTable)
@@ -79,37 +55,15 @@ func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) 
 		return fmt.Errorf("failed to marshal WeightTable: %v", err)
 	}
 
-	accessRuleJSON, err := json.Marshal(accessRule)
-	if err != nil {
-		return fmt.Errorf("failed to marshal AccessRule: %v", err)
-	}
-
-	privacyRuleJSON, err := json.Marshal(privacyRule)
-	if err != nil {
-		return fmt.Errorf("failed to marshal PrivacyRule: %v", err)
-	}
-
 	err = ctx.GetStub().PutState(weightTableKey, weightTableJSON)
 	if err != nil {
 		return fmt.Errorf("failed to store WeightTable in state: %v", err)
 	}
 
-	err = ctx.GetStub().PutState(accessRuleKey, accessRuleJSON)
-	if err != nil {
-		return fmt.Errorf("failed to store AccessRule in state: %v", err)
-	}
-
-	err = ctx.GetStub().PutState(privacyRuleKey, privacyRuleJSON)
-	if err != nil {
-		return fmt.Errorf("failed to store PrivacyRule in state: %v", err)
-	}
-
 	return nil
 }
 
-// This function is used for updating the weight of each node.
-func (s *SmartContract) UpdateNodeWeight(ctx contractapi.TransactionContextInterface, nodeID string, weight int) error {
-	// check if weight table exists
+func (s *SmartContract) UpdateOrgWeight(ctx contractapi.TransactionContextInterface, orgID string, weight int) error {
 	weightTableJSON, err := ctx.GetStub().GetState(weightTableKey)
 	if err != nil {
 		return fmt.Errorf("failed to read weight table from state: %v", err)
@@ -117,29 +71,24 @@ func (s *SmartContract) UpdateNodeWeight(ctx contractapi.TransactionContextInter
 
 	var weightTable WeightTable
 
-	// if weight table does not exist, create a new one
 	if weightTableJSON == nil {
 		weightTable = WeightTable{
 			WT: make(map[string]int),
 		}
 	} else {
-		// unmarshal the weight table
 		err = json.Unmarshal(weightTableJSON, &weightTable)
 		if err != nil {
 			return fmt.Errorf("failed to unmarshal weight table: %v", err)
 		}
 	}
 
-	// update the weight of the node
-	weightTable.WT[nodeID] = weight
+	weightTable.WT[orgID] = weight
 
-	// marshal the updated weight table
 	updatedWeightTableJSON, err := json.Marshal(weightTable)
 	if err != nil {
 		return fmt.Errorf("failed to marshal updated weight table: %v", err)
 	}
 
-	// put the updated weight table back into the state
 	err = ctx.GetStub().PutState(weightTableKey, updatedWeightTableJSON)
 	if err != nil {
 		return fmt.Errorf("failed to update weight table in state: %v", err)
@@ -148,34 +97,38 @@ func (s *SmartContract) UpdateNodeWeight(ctx contractapi.TransactionContextInter
 	return nil
 }
 
-// This function is used for querying the weight of a node.
-func (s *SmartContract) QueryNodeWeight(ctx contractapi.TransactionContextInterface, nodeID string) (int, error) {
-	// check if weight table exists
-	weightTableJSON, err := ctx.GetStub().GetState(weightTableKey)
+func (s *SmartContract) GetOrgID(ctx contractapi.TransactionContextInterface, stripeHash string) (string, error) {
+	hashInt := new(big.Int)
+	hashInt.SetString(stripeHash, 16)
+	hashMod := hashInt.Mod(hashInt, big.NewInt(int64(numOfSlots)))
+	slotID := int(hashMod.Int64())
+
+	hashSlotTableJSON, err := ctx.GetStub().GetState(hashSlotKey)
 	if err != nil {
-		return 0, fmt.Errorf("failed to read weight table from state: %v", err)
+		return "", fmt.Errorf("failed to read hash slot table from state: %v", err)
 	}
 
-	var weightTable WeightTable
+	var hashSlotTable HashSlotTable
 
-	// unmarshal the weight table
-	err = json.Unmarshal(weightTableJSON, &weightTable)
-	if err != nil {
-		return 0, fmt.Errorf("failed to unmarshal weight table: %v", err)
+	if hashSlotTableJSON == nil {
+		return "", fmt.Errorf("hash slot table does not exist")
+	} else {
+		err = json.Unmarshal(hashSlotTableJSON, &hashSlotTable)
+		if err != nil {
+			return "", fmt.Errorf("failed to unmarshal hash slot table: %v", err)
+		}
 	}
 
-	// check if node exists in weight table
-	weight, ok := weightTable.WT[nodeID]
-	if !ok {
-		return 0, fmt.Errorf("node does not exist in weight table")
+	for orgID, slot := range hashSlotTable.HST {
+		if slotID >= slot.StartSlot && slotID <= slot.EndSlot {
+			return orgID, nil
+		}
 	}
 
-	return weight, nil
+	return "", fmt.Errorf("no orgID found for hash value")
 }
 
-func (s *SmartContract) CreateVersionedHashSlot(ctx contractapi.TransactionContextInterface, blockHeight int) error {
-	// get version
-	currentVersion := blockHeight/10
+func (s *SmartContract) CreateHashSlotTable(ctx contractapi.TransactionContextInterface) error {
 	weightTableJSON, err := ctx.GetStub().GetState(weightTableKey)
 	if err != nil {
 		return fmt.Errorf("failed to read weight table from state: %v", err)
@@ -183,116 +136,81 @@ func (s *SmartContract) CreateVersionedHashSlot(ctx contractapi.TransactionConte
 
 	var weightTable WeightTable
 
-	// if weight table does not exist, return an empty map
 	if weightTableJSON == nil {
 		return fmt.Errorf("empty weight table: %v", err)
 	} else {
-		// unmarshal the weight table
 		err = json.Unmarshal(weightTableJSON, &weightTable)
 		if err != nil {
 			return fmt.Errorf("failed to unmarshal weight table: %v", err)
 		}
 	}
 
-	nodeIDs := make([]string, 0)
+	orgIDs := make([]string, 0)
 
-	// iterate through the weight table and print each node ID and its weight
 	totalWeight := 0
-	for nodeID, weight := range weightTable.WT {
-		nodeIDs = append(nodeIDs, nodeID)
+	for orgID, weight := range weightTable.WT {
+		orgIDs = append(orgIDs, orgID)
 		totalWeight += weight
 	}
-	sort.Strings(nodeIDs)
+	sort.Strings(orgIDs)
 
 	hashSlotTable := HashSlotTable{
 		HST: make(map[string]Slot),
 	}
 	startSlot := 0
-	var lastNode string
+	var lastOrg string
 
-	for _, nodeID := range nodeIDs {
-		endSlot := startSlot + weightTable.WT[nodeID]*numOfSlots/totalWeight
-		hashSlotTable.HST[nodeID] = Slot{
+	for _, orgID := range orgIDs {
+		endSlot := startSlot + weightTable.WT[orgID]*numOfSlots/totalWeight
+		hashSlotTable.HST[orgID] = Slot{
 			StartSlot: startSlot,
 			EndSlot:   endSlot,
 		}
 		startSlot = endSlot + 1
-		lastNode = nodeID
+		lastOrg = orgID
 	}
 
-	if entry, ok := hashSlotTable.HST[lastNode]; ok {
+	if entry, ok := hashSlotTable.HST[lastOrg]; ok {
 		entry.EndSlot = numOfSlots
-		hashSlotTable.HST[lastNode] = entry
+		hashSlotTable.HST[lastOrg] = entry
 	}
 
-	// marshal the hash slot table
 	hashSlotTableJSON, err := json.Marshal(hashSlotTable)
 	if err != nil {
 		return fmt.Errorf("failed to marshal hash slot table: %v", err)
 	}
 
-	// put the hash slot table into the state
-	err = ctx.GetStub().PutState(fmt.Sprintf("%d", currentVersion), hashSlotTableJSON)
+	err = ctx.GetStub().PutState(hashSlotKey, hashSlotTableJSON)
 	if err != nil {
 		return fmt.Errorf("failed to update hash slot table in state: %v", err)
 	}
 	return nil
 }
 
-// This function takes a hash value as input and calculates the node ID.
-func (s *SmartContract) QueryNodeID(ctx contractapi.TransactionContextInterface, hashValue string, blockHeight int) (string, error) {
-	// calculate slot ID
-	hashInt := new(big.Int)
-	hashInt.SetString(hashValue, 16)
-	hashMod := hashInt.Mod(hashInt, big.NewInt(int64(numOfSlots)))
-	slotID := int(hashMod.Int64())
-
-	// get current versioned hash slot table from state
-	currentVersion := blockHeight/10
-
-	hashSlotTableJSON, err := ctx.GetStub().GetState(fmt.Sprintf("%d", currentVersion))
+func (s *SmartContract) GetHashSlotTable(ctx contractapi.TransactionContextInterface) (string, error) {
+	hashSlotTableJSON, err := ctx.GetStub().GetState(hashSlotKey)
 	if err != nil {
 		return "", fmt.Errorf("failed to read hash slot table from state: %v", err)
 	}
 
-	var hashSlotTable HashSlotTable
-
-	// if hash slot table does not exist, return an error
-	if hashSlotTableJSON == nil {
-		return "", fmt.Errorf("hash slot table does not exist")
-	} else {
-		// unmarshal the hash slot table
-		err = json.Unmarshal(hashSlotTableJSON, &hashSlotTable)
-		if err != nil {
-			return "", fmt.Errorf("failed to unmarshal hash slot table: %v", err)
-		}
-	}
-
-	// iterate through the hash slot table and find the corresponding nodeID
-	for nodeID, slot := range hashSlotTable.HST {
-		if slotID >= slot.StartSlot && slotID <= slot.EndSlot {
-			return nodeID, nil
-		}
-	}
-
-	return "", fmt.Errorf("no nodeID found for hash value")
-}
-
-// This function returns the range of hash values corresponding to each node. Only for test.
-func (s *SmartContract) GetHashSlotTable(ctx contractapi.TransactionContextInterface, blockHeight int) (string, error) {
-	version := blockHeight/10
-	// get hash slot table from state
-	hashSlotTableJSON, err := ctx.GetStub().GetState(fmt.Sprintf("%d", version))
-	if err != nil {
-		return "", fmt.Errorf("failed to read hash slot table from state: %v", err)
-	}
-
-	// if hash slot table does not exist, return an error
 	if hashSlotTableJSON == nil {
 		return "", fmt.Errorf("hash slot table does not exist")
 	} 
 
 	return string(hashSlotTableJSON), nil
+}
+
+func (s *SmartContract) GetFileTree(ctx contractapi.TransactionContextInterface, fileHash string) (string, error) {
+	args, err := ctx.GetStub().GetState(fileHash)
+	if err != nil {
+		return "", fmt.Errorf("failed to read FileTree from state: %v", err)
+	}
+
+	if args == nil {
+		return "", fmt.Errorf("FileTree does not exist")
+	}
+
+	return string(args), nil
 }
 
 func (s *SmartContract) StoreFileTree(ctx contractapi.TransactionContextInterface, fileHash string, fileTreeJSON string) (string, error) {
@@ -304,190 +222,4 @@ func (s *SmartContract) StoreFileTree(ctx contractapi.TransactionContextInterfac
 	}
 
 	return "FileTree stored successfully", nil
-}
-
-// This function accepts a hash of a file and returns the FileTree of this file in the form of a json string.
-func (s *SmartContract) QueryFileTree(ctx contractapi.TransactionContextInterface, fileHash string, pk string) (string, error) {
-	// check access rules
-	var rule AccessRule
-	accessRule, err := ctx.GetStub().GetState("AccessRule")
-	if err != nil {
-		return "FAILURE", fmt.Errorf("failed to read AccessRule from state: %v", err)
-	}
-
-	err = json.Unmarshal(accessRule, &rule)
-	if err != nil {
-		return "FAILURE", fmt.Errorf("failed to unmarshal AccessRule: %v", err)
-	}
-
-	flag := rule.Flag[fileHash]
-	if flag[0] == 'T' {
-		if _, ok := rule.PermissionList[fileHash]; !ok || !IsContain(rule.PermissionList[fileHash], pk) {
-			return "ACCESS FORBIDDEN", fmt.Errorf("not in the permission list")
-		}
-	}
-	if flag[1] == 'T' {
-		if _, ok := rule.BannedList[fileHash]; ok {
-			if IsContain(rule.BannedList[fileHash], pk) {
-				return "ACCESS FORBIDDEN", fmt.Errorf("in the banned list")
-			}
-		}
-	}
-	if flag[2] == 'T' {
-		if _, ok := rule.Tokens[fileHash]; !ok || rule.Tokens[fileHash] == 0 {
-			return "ACCESS FORBIDDEN", fmt.Errorf("token runs out")
-		}
-
-		rule.Tokens[fileHash] = rule.Tokens[fileHash]-1
-		accessRuleJSON, err := json.Marshal(rule)
-		if err != nil {
-			return "FAILURE", fmt.Errorf("failed to marshal AccessRule: %v", err)
-		}
-
-		err = ctx.GetStub().PutState("AccessRule", accessRuleJSON)
-		if err != nil {
-			return "FAILURE", fmt.Errorf("failed to update AccessRule in state: %v", err)
-		}
-	}
-
-	// get the FileTree from the state
-	args, err := ctx.GetStub().GetState(fileHash)
-	if err != nil {
-		return "", fmt.Errorf("failed to read FileTree from state: %v", err)
-	}
-
-	// if FileTree does not exist, return an error
-	if args == nil {
-		return "", fmt.Errorf("FileTree does not exist")
-	}
-
-	return string(args), nil
-}
-
-// Rule 1: node `pk` is allowed to access the file of which the hash value is `fileHash`.
-func (s *SmartContract) AddPermissionRule(ctx contractapi.TransactionContextInterface, pk string, fileHash string) (string, error) {
-	var rule AccessRule
-	accessRule, err := ctx.GetStub().GetState(accessRuleKey)
-	if err != nil {
-		return "FAILURE", fmt.Errorf("failed to read AccessRule from state: %v", err)
-	}
-
-	err = json.Unmarshal(accessRule, &rule)
-	if err != nil {
-		return "FAILURE", fmt.Errorf("failed to unmarshal AccessRule: %v", err)
-	}
-
-	if _, ok := rule.PermissionList[fileHash]; !ok {
-		rule.PermissionList[fileHash] = []string{pk}
-	} else {
-		rule.PermissionList[fileHash] = append(rule.PermissionList[fileHash], pk)
-	}
-
-	accessRuleJSON, err := json.Marshal(rule)
-	if err != nil {
-		return "FAILURE", fmt.Errorf("failed to marshal AccessRule: %v", err)
-	}
-
-	err = ctx.GetStub().PutState(accessRuleKey, accessRuleJSON)
-	if err != nil {
-		return "FAILURE", fmt.Errorf("failed to update AccessRule in state: %v", err)
-	}
-
-	return "SUCCESS", nil
-}
-
-// Rule 2: node `pk` is forbidden to access the file of which the hash value is `fileHash`.
-func (s *SmartContract) AddBannedRule(ctx contractapi.TransactionContextInterface, pk string, fileHash string) (string, error) {
-	var rule AccessRule
-	accessRule, err := ctx.GetStub().GetState(accessRuleKey)
-	if err != nil {
-		return "FAILURE", fmt.Errorf("failed to read AccessRule from state: %v", err)
-	}
-
-	err = json.Unmarshal(accessRule, &rule)
-	if err != nil {
-		return "FAILURE", fmt.Errorf("failed to unmarshal AccessRule: %v", err)
-	}
-
-	if _, ok := rule.BannedList[fileHash]; !ok {
-		rule.BannedList[fileHash] = []string{pk}
-	} else {
-		rule.BannedList[fileHash] = append(rule.BannedList[fileHash], pk)
-	}
-
-	accessRuleJSON, err := json.Marshal(rule)
-	if err != nil {
-		return "FAILURE", fmt.Errorf("failed to marshal AccessRule: %v", err)
-	}
-
-	err = ctx.GetStub().PutState(accessRuleKey, accessRuleJSON)
-	if err != nil {
-		return "FAILURE", fmt.Errorf("failed to update AccessRule in state: %v", err)
-	}
-
-	return "SUCCESS", nil
-}
-
-// Rule 3: the file of which the hash value is `fileHash` is allowed to be accessed by `nTokens` number of users.
-func (s *SmartContract) SetToken(ctx contractapi.TransactionContextInterface, nTokens int, fileHash string) (string, error) {
-	var rule AccessRule
-	accessRule, err := ctx.GetStub().GetState(accessRuleKey)
-	if err != nil {
-		return "FAILURE", fmt.Errorf("failed to read AccessRule from state: %v", err)
-	}
-
-	err = json.Unmarshal(accessRule, &rule)
-	if err != nil {
-		return "FAILURE", fmt.Errorf("failed to unmarshal AccessRule: %v", err)
-	}
-
-	rule.Tokens[fileHash] = nTokens
-	
-	accessRuleJSON, err := json.Marshal(rule)
-	if err != nil {
-		return "FAILURE", fmt.Errorf("failed to marshal AccessRule: %v", err)
-	}
-
-	err = ctx.GetStub().PutState(accessRuleKey, accessRuleJSON)
-	if err != nil {
-		return "FAILURE", fmt.Errorf("failed to update AccessRule in state: %v", err)
-	}
-
-	return "SUCCESS", nil
-}
-
-func (s *SmartContract) SetFlag(ctx contractapi.TransactionContextInterface, flag string, fileHash string) (string, error) {
-	var rule AccessRule
-	accessRule, err := ctx.GetStub().GetState(accessRuleKey)
-	if err != nil {
-		return "FAILURE", fmt.Errorf("failed to read AccessRule from state: %v", err)
-	}
-
-	err = json.Unmarshal(accessRule, &rule)
-	if err != nil {
-		return "FAILURE", fmt.Errorf("failed to unmarshal AccessRule: %v", err)
-	}
-
-	rule.Flag[fileHash] = flag
-	
-	accessRuleJSON, err := json.Marshal(rule)
-	if err != nil {
-		return "FAILURE", fmt.Errorf("failed to marshal AccessRule: %v", err)
-	}
-
-	err = ctx.GetStub().PutState(accessRuleKey, accessRuleJSON)
-	if err != nil {
-		return "FAILURE", fmt.Errorf("failed to update AccessRule in state: %v", err)
-	}
-
-	return "SUCCESS", nil
-}
-
-func IsContain(items []string, item string) bool {
-    for _, eachItem := range items {
-        if eachItem == item {
-            return true
-        }
-    }
-    return false
 }
